@@ -215,6 +215,9 @@ symbol = "raku "
 [ruby]
 symbol = "rb "
 
+[rust]
+symbol = "rs "
+
 [scala]
 symbol = "scala "
 
