@@ -36,7 +36,7 @@ style = "bold fg:30"
 
 [python]
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
-symbol = ""
+symbol = "py "
 
 [time]
 disabled = true
@@ -214,9 +214,6 @@ symbol = "raku "
 
 [ruby]
 symbol = "rb "
-
-[rust]
-symbol = "rs "
 
 [scala]
 symbol = "scala "
