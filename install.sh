@@ -35,6 +35,11 @@ for file in shell/*; do
     fi
 done
 
+# starship.rs conf
+if ask "Do you want to install starship.toml?"; then
+    ln -s "$(realpath "starship.rs/starship.toml")" ~/.config/starship.toml
+fi
+
 # Tmux conf
 # if ask "Do you want to install .tmux.conf?"; then
 #     ln -s "$(realpath ".tmux.conf")" ~/.tmux.conf
