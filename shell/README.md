@@ -1,6 +1,6 @@
 # Shell
 
-personal config files for Shell
+personal config files for shell
 
 usually sourced from shell dotfile, e.g. `.bashrc`
 
