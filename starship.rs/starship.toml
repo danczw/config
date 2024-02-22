@@ -240,7 +240,7 @@ symbol = "swift "
 symbol = "typst "
 
 [terraform]
-symbol = "terraform "
+symbol = "trfrm "
 
 [zig]
 symbol = "zig "
