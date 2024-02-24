@@ -143,7 +143,7 @@ let light_theme = {
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
-    show_banner: true # true or false to enable or disable the welcome banner at startup
+    show_banner: false # true or false to enable or disable the welcome banner at startup
 
     ls: {
         use_ls_colors: true # use the LS_COLORS environment variable to colorize output
@@ -761,9 +761,12 @@ $env.config = {
     ]
 }
 
-# Aliases
+# >----- Aliases -----<
 # list
 alias ll = ls -la
+
+# navigation
+alias home="cd ~"
 
 # git
 alias gs = git status
@@ -773,3 +776,29 @@ alias gst = git stash
 
 # misc
 alias today = date now
+
+
+eval 
+            __main() {
+                local major="${BASH_VERSINFO[0]}"
+                local minor="${BASH_VERSINFO[1]}"
+
+                if ((major > 4)) || { ((major == 4)) && ((minor >= 1)); }; then
+                    source <(/home/linuxbrew/.linuxbrew/bin/starship init bash --print-full-init)
+                else
+                    source /dev/stdin <<<"$(/home/linuxbrew/.linuxbrew/bin/starship init bash --print-full-init)"
+                fi
+            }
+            __main
+            unset -f __main
+            
+
+# -------------- dotfiles install ---------------
+source /home/dancz/code/config/shell/README.md
+source /home/dancz/code/config/shell/case_insensitive_completion.sh
+source /home/dancz/code/config/shell/git_aliases.sh
+source /home/dancz/code/config/shell/git_prompt.sh
+source /home/dancz/code/config/shell/navigation_aliases.sh
+source /home/dancz/code/config/shell/ssh_setup.sh
+
+# -------------- dotfiles install ---------------
