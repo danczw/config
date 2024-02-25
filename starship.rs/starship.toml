@@ -31,7 +31,7 @@ style = "bold fg:160"
 
 [hostname]
 ssh_only = false
-format = '[$hostname \]]($style) '
+format = '[$hostname |]($style) '
 style = "bold fg:30"
 
 [python]
@@ -45,7 +45,7 @@ style = "fg:8"
 
 [username]
 show_always = true
-format = '[\[ $user@]($style)'
+format = '[$user@]($style)'
 style_user = "bold fg:30"
 
 # removing further symbols
