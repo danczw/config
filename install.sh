@@ -14,18 +14,19 @@ function ask() {
     [ "$response_lc" = "y" ]
 }
 
-# Tmux conf
-# if ask "Do you want to install .tmux.conf?"; then
-#     ln -s "$(realpath ".tmux.conf")" ~/.tmux.conf
-# fi
-
 # Vim conf
 # if ask "Do you want to install .vimrc?"; then
 #     ln -s "$(realpath ".vimrc")" ~/.vimrc
 # fi
 
+# zellij conf
+if ask "zellij config.kdl?"; then
+    rm -f ~/.config/zellij/config.kdl
+    ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
+fi
+
 # nu shell conf
-if ask "config.nu?"; then
+if ask "nushell config.nu?"; then
     rm -f ~/.config/nushell/config.nu
     ln -s "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
 fi
