@@ -26,9 +26,11 @@ if ask "zellij config.kdl?"; then
 fi
 
 # nu shell conf
-if ask "nushell config.nu?"; then
+if ask "nushell config.nu and env.nu?"; then
     rm -f ~/.config/nushell/config.nu
+    rm -f ~/.config/nushell/env.nu
     ln -s "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
+    ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
 fi
 
 # Check what shell is being used
