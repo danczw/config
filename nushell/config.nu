@@ -783,6 +783,12 @@ $env.PROMPT_MULTILINE_INDICATOR = "::: "
 # list
 alias ll = ls -la
 
+# navigation
+alias .. = cd ..
+alias ... = cd ../..
+alias .... = cd ../../..
+alias home = cd ~
+
 # git
 alias gs = git status
 alias gd = git diff
