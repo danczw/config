@@ -761,20 +761,7 @@ $env.config = {
     ]
 }
 
-# >----- Aliases -----<
-# list
-alias ll = ls -la
-
-# git
-alias gs = git status
-alias gpl = git pull
-alias gps = git push
-alias gst = git stash
-
-# misc
-alias today = date now
-
-# starship setup
+# >----- starship -----<
 $env.STARSHIP_SHELL = "nu"
 
 def create_left_prompt [] {
@@ -791,3 +778,20 @@ $env.PROMPT_INDICATOR = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ": "
 $env.PROMPT_INDICATOR_VI_NORMAL = "〉"
 $env.PROMPT_MULTILINE_INDICATOR = "::: "
+
+# >----- Aliases -----<
+# list
+alias ll = ls -la
+
+# git
+alias gs = git status
+alias gd = git diff
+alias gl = git log
+alias gc = git commit
+
+alias gpl = git pull
+alias gps = git push
+alias gst = git stash
+
+# misc
+alias today = date now
