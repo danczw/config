@@ -48,6 +48,7 @@ echo "Using $SH"
 
 # starship.rs conf
 if ask "starship.toml?"; then
+    rm -f ~/.config/starship.toml
     ln -s "$(realpath "starship.rs/starship.toml")" ~/.config/starship.toml
     echo eval "$(starship init bash)" >> $SH
 fi
