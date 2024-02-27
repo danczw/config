@@ -4,7 +4,7 @@
 add_newline = true
 
 [character]
-success_symbol = "[>](bold fg:30)"
+success_symbol = "[〉](bold fg:30)"
 error_symbol = "[x](bold fg:124)"
 vimcmd_symbol = "[<](bold fg:30)"
 
@@ -33,6 +33,9 @@ style = "bold fg:160"
 ssh_only = false
 format = '[$hostname |]($style) '
 style = "bold fg:30"
+
+[line_break]
+disabled = true
 
 [python]
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
@@ -193,6 +196,7 @@ Windows = "win "
 
 [package]
 symbol = "pkg "
+disabled = true
 
 [perl]
 symbol = "pl "
