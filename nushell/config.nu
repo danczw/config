@@ -777,15 +777,6 @@ $env.PROMPT_COMMAND = { create_left_prompt }
 $env.PROMPT_COMMAND_RIGHT = { create_right_prompt }
 
 # >----- Aliases -----<
-# list
-alias ll = ls -la
-
-# navigation
-alias .. = cd ..
-alias ... = cd ../..
-alias .... = cd ../../..
-alias home = cd ~
-
 # git
 alias gs = git status
 alias gd = git diff
@@ -796,5 +787,17 @@ alias gpl = git pull
 alias gps = git push
 alias gst = git stash
 
+# list
+alias ll = ls -la
+
 # misc
 alias today = date now
+
+# navigation
+alias .. = cd ..
+alias ... = cd ../..
+alias .... = cd ../../..
+alias home = cd ~
+
+# python
+alias venv = sh -i -c '. venv/bin/activate ; nu'
