@@ -1,0 +1,10 @@
+[window]
+padding ={ x = 0, y = 0 }
+opacity = 1
+title = "Terminal"
+
+[font]
+size = 10.5
+
+[colors.primary]
+background = "#2B303A"
