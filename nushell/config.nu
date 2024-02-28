@@ -19,7 +19,7 @@ let dark_theme = {
     int: white
     filesize: cyan
     duration: white
-    date: purple
+    date: white
     range: white
     float: white
     string: white
@@ -769,7 +769,8 @@ def create_left_prompt [] {
 
 def create_right_prompt [] {
     let time_segment = ([(date now | format date '%m/%d/%Y %r')] | str join)
-    $time_segment
+    let time_segment_colored = $"(ansi grey)($time_segment)"
+    $time_segment_colored
 }
 
 # Use nushell functions to define your right and left prompt
