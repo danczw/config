@@ -11,12 +11,13 @@ vimcmd_symbol = "[<](bold fg:30)"
 [directory]
 truncation_length = 3
 truncation_symbol = "…/"
-style = "bold fg:15"
+style = "fg:15"
 read_only = " [x]"
 
 [git_branch]
 symbol = "git "
 format = '[$symbol$branch(:$remote_branch)]($style) '
+style = "fg:3"
 
 [git_commit]
 tag_symbol = " tag "
@@ -27,12 +28,12 @@ behind = "<"
 diverged = "<>"
 renamed = "r"
 deleted = "x"
-style = "bold fg:160"
+style = "fg:160"
 
 [hostname]
 ssh_only = false
-format = '[$hostname |]($style) '
-style = "bold fg:30"
+format = '[$hostname]($style):'
+style = "fg:30"
 
 [line_break]
 disabled = true
@@ -49,7 +50,7 @@ style = "fg:8"
 [username]
 show_always = true
 format = '[$user@]($style)'
-style_user = "bold fg:30"
+style_user = "fg:30"
 
 # removing further symbols
 [aws]
@@ -196,7 +197,6 @@ Windows = "win "
 
 [package]
 symbol = "pkg "
-disabled = true
 
 [perl]
 symbol = "pl "
