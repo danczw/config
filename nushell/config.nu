@@ -2,6 +2,48 @@
 #
 # version = "0.89.0"
 
+# >----- Prompt -----<
+$env.STARSHIP_SHELL = "nu"
+def create_left_prompt [] {
+    starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
+}
+
+def create_right_prompt [] {
+    let time_segment = ([(date now | format date '%m/%d/%Y %r')] | str join)
+    let time_segment_colored = $"(ansi { fg: '#606670'})($time_segment)"
+    $time_segment_colored
+}
+
+# Use nushell functions to define your right and left prompt
+$env.PROMPT_COMMAND = { create_left_prompt }
+$env.PROMPT_COMMAND_RIGHT = { create_right_prompt }
+
+# >----- Aliases -----<
+# git
+alias gs = git status
+alias gd = git diff
+alias gl = git log
+alias gc = git commit
+
+alias gpl = git pull
+alias gps = git push
+alias gst = git stash
+
+# list
+alias ll = ls -la
+
+# misc
+alias today = date now
+
+# navigation
+alias .. = cd ..
+alias ... = cd ../..
+alias .... = cd ../../..
+alias home = cd ~
+
+# python
+alias venv = sh -i -c '. venv/bin/activate ; nu'
+
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
 # And here is the theme collection
@@ -760,45 +802,3 @@ $env.config = {
         }
     ]
 }
-
-# >----- Prompt -----<
-$env.STARSHIP_SHELL = "nu"
-def create_left_prompt [] {
-    starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
-}
-
-def create_right_prompt [] {
-    let time_segment = ([(date now | format date '%m/%d/%Y %r')] | str join)
-    let time_segment_colored = $"(ansi grey)($time_segment)"
-    $time_segment_colored
-}
-
-# Use nushell functions to define your right and left prompt
-$env.PROMPT_COMMAND = { create_left_prompt }
-$env.PROMPT_COMMAND_RIGHT = { create_right_prompt }
-
-# >----- Aliases -----<
-# git
-alias gs = git status
-alias gd = git diff
-alias gl = git log
-alias gc = git commit
-
-alias gpl = git pull
-alias gps = git push
-alias gst = git stash
-
-# list
-alias ll = ls -la
-
-# misc
-alias today = date now
-
-# navigation
-alias .. = cd ..
-alias ... = cd ../..
-alias .... = cd ../../..
-alias home = cd ~
-
-# python
-alias venv = sh -i -c '. venv/bin/activate ; nu'
