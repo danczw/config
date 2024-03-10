@@ -1,23 +1,23 @@
 # using ANSI colors: https://i.stack.imgur.com/KTSQa.png
 
 # Inserts a blank line between shell prompts
-add_newline = true
+add_newline = false
 
 [character]
-success_symbol = "[〉](bold fg:30)"
-error_symbol = "[x](bold fg:124)"
-vimcmd_symbol = "[<](bold fg:30)"
+success_symbol = "[|](bold fg:#dbdbdb)"
+error_symbol = "[x](bold fg:#c9636e)"
+vimcmd_symbol = "[<](bold fg:#018d8d)"
 
 [directory]
 truncation_length = 3
 truncation_symbol = "…/"
-style = "fg:15"
+style = "fg:#dbdbdb"
 read_only = " [x]"
 
 [git_branch]
 symbol = "git "
 format = '[$symbol$branch(:$remote_branch)]($style) '
-style = "fg:3"
+style = "fg:#E0C191"
 
 [git_commit]
 tag_symbol = " tag "
@@ -28,12 +28,12 @@ behind = "<"
 diverged = "<>"
 renamed = "r"
 deleted = "x"
-style = "fg:160"
+style = "fg:#c9636e"
 
 [hostname]
 ssh_only = false
 format = '[$hostname]($style):'
-style = "fg:30"
+style = "fg:#018d8d"
 
 [line_break]
 disabled = true
@@ -45,12 +45,12 @@ symbol = "py "
 [time]
 disabled = true
 format = '[\[ $time \]]($style) '
-style = "fg:8"
+style = "fg:#606670"
 
 [username]
 show_always = true
 format = '[$user@]($style)'
-style_user = "fg:30"
+style_user = "fg:#018d8d"
 
 # removing further symbols
 [aws]
