@@ -10,8 +10,9 @@ def create_left_prompt [] {
 
 def create_right_prompt [] {
     let time_segment = ([(date now | format date '%m/%d/%Y %r')] | str join)
-    let time_segment_colored = $"(ansi { fg: '#606670'})($time_segment)"
-    $time_segment_colored
+    let host_segment = (sys).host | get hostname
+    let prompt = $"(ansi { fg: '#606670'})(whoami)@($host_segment) | ($time_segment)"
+    $prompt
 }
 
 # Use nushell functions to define your right and left prompt
