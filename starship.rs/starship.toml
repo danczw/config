@@ -1,5 +1,10 @@
 # using ANSI colors: https://i.stack.imgur.com/KTSQa.png
 
+# Use custom format
+# format = '''
+# [┌───>](bold green)$all
+# [└─>](bold green) '''
+
 # Inserts a blank line between shell prompts
 add_newline = false
 
