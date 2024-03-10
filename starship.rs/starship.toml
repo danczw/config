@@ -6,7 +6,7 @@
 # [└─>](bold green) '''
 
 # Inserts a blank line between shell prompts
-add_newline = false
+add_newline = true
 
 [character]
 success_symbol = "[|](bold fg:#018d8d)"
