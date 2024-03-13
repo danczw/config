@@ -1,12 +1,15 @@
 <div align="center">
 
-<font size="8"> <h1> <b> config - danczw config files </b> </h> </font>
-
-<img src="./assets/config.png" width="200" height="200">
+<h1> <b> config - danczw dotfiles </b> </h1>
 
 **Centralized repository for configuration files, streamlining personal settings and preference**
 
+<img src="./assets/config.png" width="100" height="100">
+<br>
+<br>
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 
 </div>
 
@@ -15,6 +18,14 @@
 The primary goal of this repository is to simplify the management of personal configurations by providing a unified location for settings across various software applications. Feel free to use the configurations as-is or as a starting point for your own customizations.
 
 ## Config Files
+
+- [Alacritty](./alacritty) - Terminal emulator
+- [bash](./bash) - Shell
+- [Helix](./helix) - text editor
+- [Nu Shell](./nushell) - Shell
+- [Starship](./starship) - Cross-shell prompt
+- [winterminal](./winterminal) - Terminal emulator
+- [Zellij](./zellij) - Terminal multiplexer
 
 ## Getting Started
 

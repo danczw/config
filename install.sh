@@ -14,10 +14,11 @@ function ask() {
     [ "$response_lc" = "y" ]
 }
 
-# Vim conf
-# if ask "Do you want to install .vimrc?"; then
-#     ln -s "$(realpath ".vimrc")" ~/.vimrc
-# fi
+# alacritty conf
+if ask "alacritty.toml?"; then
+    rm -f ~/.config/alacritty/alacritty.toml
+    ln -s "$(realpath "alacritty/config.kdl")" ~/.config/alacritty/alacritty.toml
+fi
 
 # zellij conf
 if ask "zellij config.kdl?"; then
@@ -32,6 +33,7 @@ if ask "nushell config.nu and env.nu?"; then
     ln -s "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
     ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
 fi
+
 
 # Check what shell is being used
 SH="${HOME}/.bashrc"
@@ -49,18 +51,18 @@ echo "Using $SH"
 # starship.rs conf
 if ask "starship.toml?"; then
     rm -f ~/.config/starship.toml
-    ln -s "$(realpath "starship.rs/starship.toml")" ~/.config/starship.toml
-    echo eval "$(starship init bash)" >> $SH
+    ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
+    echo 'Note: Make sure to add equivalent of > $eval "$(starship init bash)" < to your shell config'
 fi
 
 echo "---"
-# check if selected shell is nushell
-if ask "dotfiles in $SH?"; then
+# check selected shell
+if ask "bash dotfiles in $SH?"; then
     echo >> $SH
     echo '# -------------- dotfiles install ---------------' >> $SH
 
     # Ask which files should be sourced
-    for file in shell/*; do
+    for file in bash/*; do
         if [ -f "$file" ]; then
             filename=$(basename "$file")
             if ask "${filename}?"; then
