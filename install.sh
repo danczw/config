@@ -39,6 +39,7 @@ fi
 if ask "hexlix config.toml?"; then
     rm -f ~/.config/helix/config.toml
     ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
+fi
 
 #-------------------------------------------------------------------------------
 # Check what shell is being used
