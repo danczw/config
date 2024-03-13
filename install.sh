@@ -14,6 +14,7 @@ function ask() {
     [ "$response_lc" = "y" ]
 }
 
+#-------------------------------------------------------------------------------
 # alacritty conf
 if ask "alacritty.toml?"; then
     rm -f ~/.config/alacritty/alacritty.toml
@@ -34,7 +35,12 @@ if ask "nushell config.nu and env.nu?"; then
     ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
 fi
 
+# helix conf
+if ask "hexlix config.toml?"; then
+    rm -f ~/.config/helix/config.toml
+    ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
 
+#-------------------------------------------------------------------------------
 # Check what shell is being used
 SH="${HOME}/.bashrc"
 ZSHRC="${HOME}/.zshrc"
