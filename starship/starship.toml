@@ -65,6 +65,7 @@ style_user = "fg:#018d8d"
 # removing further symbols
 [aws]
 symbol = "aws "
+disabled = true
 
 [azure]
 symbol = "az "
