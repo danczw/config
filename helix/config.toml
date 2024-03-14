@@ -1,4 +1,4 @@
-theme = "ayu_mirage"
+theme = "sonokai"
 
 [editor]
 true-color = true
