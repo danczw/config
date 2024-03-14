@@ -13,6 +13,10 @@ success_symbol = "[>](bold fg:#018d8d)"
 error_symbol = "[x](bold fg:#c9636e)"
 vimcmd_symbol = "[<](bold fg:#018d8d)"
 
+[cmd_duration]
+format = "[$duration]($style) "
+style = "fg:#606670"
+
 [directory]
 truncation_length = 3
 truncation_symbol = "…/"
