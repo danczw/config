@@ -58,6 +58,7 @@ format = '[\[ $time \]]($style) '
 style = "fg:#606670"
 
 [username]
+disabled = true
 show_always = false
 format = '[$user@]($style)'
 style_user = "fg:#018d8d"
