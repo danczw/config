@@ -15,30 +15,43 @@ function ask() {
 }
 
 #-------------------------------------------------------------------------------
+mkdir -p ~/.config/
+
 # alacritty conf
 if ask "alacritty.toml?"; then
+    mkdir -p ~/.config/alacritty/
     rm -f ~/.config/alacritty/alacritty.toml
     ln -s "$(realpath "alacritty/config.kdl")" ~/.config/alacritty/alacritty.toml
 fi
 
 # zellij conf
 if ask "zellij config.kdl?"; then
+    mkdir -p ~/.config/zellij/
     rm -f ~/.config/zellij/config.kdl
     ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
 fi
 
 # nu shell conf
 if ask "nushell config.nu and env.nu?"; then
+    mkdir -p ~/.config/nushell/
+
     rm -f ~/.config/nushell/config.nu
     rm -f ~/.config/nushell/env.nu
+
     ln -s "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
     ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
 fi
 
 # helix conf
-if ask "hexlix config.toml?"; then
+if ask "hexlix config.toml and mytheme.toml?"; then
+    mkdir -p ~/.config/helix/
+    mkdir -p ~/.config/helix/themes/
+
     rm -f ~/.config/helix/config.toml
+    rm -f ~/.config/helix/themes/mytheme
+
     ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
+    ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
 fi
 
 #-------------------------------------------------------------------------------
