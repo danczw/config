@@ -5,6 +5,10 @@
 # [┌───>](bold green)$all
 # [└─>](bold green) '''
 
+# prompt format
+format = "$all"
+right_format = """$username$hostname$time"""
+
 # Inserts a blank line between shell prompts
 add_newline = true
 
@@ -40,10 +44,10 @@ deleted = "x"
 style = "fg:#c9636e"
 
 [hostname]
-disabled = true
+disabled = false
 ssh_only = false
-format = '[$hostname]($style):'
-style = "fg:#018d8d"
+format = '[$hostname |]($style)'
+style = "fg:#606670"
 
 [line_break]
 disabled = true
@@ -53,16 +57,17 @@ format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 symbol = "py "
 
 [time]
-disabled = true
-format = '[\[ $time \]]($style) '
+disabled = false
+format = '[ $time ]($style) '
 style = "fg:#606670"
 
 [username]
-disabled = true
-show_always = false
+disabled = false
+show_always = true
 format = '[$user@]($style)'
-style_user = "fg:#018d8d"
+style_user = "fg:#606670"
 
+# ------------------------
 # removing further symbols
 [aws]
 symbol = "aws "

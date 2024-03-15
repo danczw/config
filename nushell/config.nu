@@ -9,10 +9,11 @@ def create_left_prompt [] {
 }
 
 def create_right_prompt [] {
-    let time_segment = ([(date now | format date '%m/%d/%Y %r')] | str join)
-    let host_segment = (sys).host | get hostname
-    let prompt = $"(ansi { fg: '#606670'})(whoami)@($host_segment) | ($time_segment)"
-    $prompt
+    # let time_segment = ([(date now | format date '%m/%d/%Y %r')] | str join)
+    # let host_segment = (sys).host | get hostname
+    # let prompt = $"(ansi { fg: '#606670'})(whoami)@($host_segment) | ($time_segment)"
+    # $prompt
+    starship prompt --right
 }
 
 # Use nushell functions to define your right and left prompt
