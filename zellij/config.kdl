@@ -254,17 +254,17 @@ default_shell "nu"
 //
 themes {
     danczw {
-        fg 248 248 242
-        bg 43 48 58
-        red 204 52 43
-        green 60 121 84
-        yellow 241 250 140
-        blue 98 114 164
-        magenta 255 121 198
-        orange 225 153 37
-        cyan 86 146 206
-        black 0 0 0
-        white 255 255 255
+        fg "#EBEBEB"
+        bg "#2B303A"
+        red "#C86770"
+        green "#8AAC72"
+        yellow "#D6B077"
+        blue "#6D8CC5"
+        magenta "#A86FAE"
+        orange "#D6B077"
+        cyan "#76BCBC"
+        black "#1D1F23"
+        white "#EBEBEB"
     }
 }
 

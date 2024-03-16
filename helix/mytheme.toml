@@ -1,3 +1,6 @@
 inherits = "sonokai"
 
-# ui.virtual.ruler = "#606670"
+# [palette]
+# white = "#EBEBEB"
+
+"ui.virtual.ruler" = { bg = "bg1" }

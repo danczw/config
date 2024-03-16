@@ -13,24 +13,24 @@ right_format = """$username$hostname$time"""
 add_newline = true
 
 [character]
-success_symbol = "[>](bold fg:#018d8d)"
-error_symbol = "[x](bold fg:#c9636e)"
-vimcmd_symbol = "[<](bold fg:#018d8d)"
+success_symbol = "[>](bold fg:#76BCBC)"
+error_symbol = "[x](bold fg:#C86770)"
+vimcmd_symbol = "[<](bold fg:#76BCBC)"
 
 [cmd_duration]
 format = "[$duration]($style) "
-style = "fg:#606670"
+style = "fg:#717884"
 
 [directory]
 truncation_length = 3
 truncation_symbol = "…/"
-style = "fg:#dbdbdb"
+style = "fg:#EBEBEB"
 read_only = " [x]"
 
 [git_branch]
 symbol = "git "
 format = '[$symbol$branch(:$remote_branch)]($style) '
-style = "fg:#E0C191"
+style = "fg:#D6B077"
 
 [git_commit]
 tag_symbol = " tag "
@@ -41,13 +41,13 @@ behind = "<"
 diverged = "<>"
 renamed = "r"
 deleted = "x"
-style = "fg:#c9636e"
+style = "fg:#C86770"
 
 [hostname]
 disabled = false
 ssh_only = false
 format = '[$hostname |]($style)'
-style = "fg:#606670"
+style = "fg:#717884"
 
 [line_break]
 disabled = true
@@ -55,17 +55,18 @@ disabled = true
 [python]
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 symbol = "py "
+style = "bold fg:#8AAC72"
 
 [time]
 disabled = false
 format = '[ $time ]($style) '
-style = "fg:#606670"
+style = "fg:#717884"
 
 [username]
 disabled = false
 show_always = true
 format = '[$user@]($style)'
-style_user = "fg:#606670"
+style_user = "fg:#717884"
 
 # ------------------------
 # removing further symbols

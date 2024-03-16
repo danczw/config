@@ -1,10 +1,20 @@
 [window]
 padding ={ x = 0, y = 0 }
 opacity = 1
-title = "Terminal"
 
 [font]
 size = 10.5
 
 [colors.primary]
 background = "#2B303A"
+foreground = "#EBEBEB"
+
+[colors.normal]
+black = "#1D1F23"
+blue = "#6D8CC5"
+cyan = "#76BCBC"
+green = "#8AAC72"
+magenta = "#A86FAE"
+red = "#C86770"
+white = "#EBEBEB"
+yellow = "#d6b077"

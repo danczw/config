@@ -26,7 +26,7 @@ For the themes, base color palette can be found in `colors.json` as well as [coo
 - [Helix](./helix) - Text Editor
 - [Nu Shell](./nushell) - Shell
 - [Starship](./starship) - Cross-shell Prompt
-- [winterminal](./winterminal) - Terminal Emulator
+- [Winterminal](./winterminal) - Terminal Emulator
 - [Zellij](./zellij) - Terminal Multiplexer
 
 ## Getting Started
