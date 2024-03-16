@@ -17,15 +17,17 @@
 
 The primary goal of this repository is to simplify the management of personal configurations by providing a unified location for settings across various software applications. Feel free to use the configurations as-is or as a starting point for your own customizations.
 
+For the themes, base color palette can be found in `colors.json` as well as [coolors.co](https://coolors.co/1d1f23-2b303a-ebebeb-6d8cc5-76bcbc-8aac72-a86fae-d6b077-c86770)  
+
 ## Config Files
 
-- [Alacritty](./alacritty) - Terminal emulator
-- [bash](./bash) - Shell
-- [Helix](./helix) - text editor
+- [Alacritty](./alacritty) - Terminal Emulator
+- [Bash](./bash) - Shell
+- [Helix](./helix) - Text Editor
 - [Nu Shell](./nushell) - Shell
-- [Starship](./starship) - Cross-shell prompt
-- [winterminal](./winterminal) - Terminal emulator
-- [Zellij](./zellij) - Terminal multiplexer
+- [Starship](./starship) - Cross-shell Prompt
+- [winterminal](./winterminal) - Terminal Emulator
+- [Zellij](./zellij) - Terminal Multiplexer
 
 ## Getting Started
 
