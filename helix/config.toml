@@ -3,6 +3,7 @@ theme = "mytheme"
 [editor]
 true-color = true
 rulers = [80, 120]
+line-number = "relative"
 
 [editor.cursor-shape]
 insert = "bar"
