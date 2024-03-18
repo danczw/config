@@ -55,7 +55,7 @@ disabled = true
 [python]
 format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 symbol = "py "
-style = "bold fg:#717884"
+style = "fg:#717884"
 
 [time]
 disabled = false
@@ -88,7 +88,7 @@ symbol = "cobol "
 
 [conda]
 symbol = "conda "
-style ="bold fg:#717884"
+style ="fg:#717884"
 
 [crystal]
 symbol = "cr "
