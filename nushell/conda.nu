@@ -1,3 +1,5 @@
+# based on https://github.com/nushell/nu_scripts/tree/main/modules/virtual_environments/nu_conda_2
+
 def --env load-conda-info-env [] {
     if (not (has-env CONDA_INFO)) {
         export-env {

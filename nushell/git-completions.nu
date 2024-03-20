@@ -1,3 +1,4 @@
+# based on https://github.com/nushell/nu_scripts/tree/main/custom-completions/git
 
 def "nu-complete git available upstream" [] {
   ^git branch -a | lines | each { |line| $line | str replace '\* ' "" | str trim }
