@@ -2,6 +2,10 @@
 #
 # version = "0.89.0"
 
+# >----- Scripts -----<
+source ~/.config/nushell/git-completions.nu
+source ~/.config/nushell/conda.nu
+
 # >----- Prompt -----<
 $env.STARSHIP_SHELL = "nu"
 def create_left_prompt [] {

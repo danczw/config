@@ -32,14 +32,18 @@ if ask "zellij config.kdl?"; then
 fi
 
 # nu shell conf
-if ask "nushell config.nu and env.nu?"; then
+if ask "nushell config.nu, env.nu and nu scripts?"; then
     mkdir -p ~/.config/nushell/
 
     rm -f ~/.config/nushell/config.nu
     rm -f ~/.config/nushell/env.nu
+    rm -f ~/.config/nushell/git-completions.nu
+    rm -f ~/.config/nushell/conda.nu
 
     ln -s "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
     ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
+    ln -s "$(realpath "nushell/git-completions.nu")" ~/.config/nushell/git-completions.nu
+    ln -s "$(realpath "nushell/conda.nu")" ~/.config/nushell/conda.nu
 fi
 
 # helix conf
@@ -48,7 +52,7 @@ if ask "hexlix config.toml and mytheme.toml?"; then
     mkdir -p ~/.config/helix/themes/
 
     rm -f ~/.config/helix/config.toml
-    rm -f ~/.config/helix/themes/mytheme
+    rm -f ~/.config/helix/themes/mytheme.toml
 
     ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
     ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
