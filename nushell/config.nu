@@ -4,7 +4,7 @@
 
 # >----- Scripts -----<
 source ~/.config/nushell/git-completions.nu
-source ~/.config/nushell/conda.nu
+use ~/.config/nushell/conda.nu
 
 # >----- Prompt -----<
 $env.STARSHIP_SHELL = "nu"
