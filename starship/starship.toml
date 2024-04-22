@@ -89,7 +89,7 @@ symbol = "cobol "
 [conda]
 symbol = "conda "
 style ="fg:#717884"
-
+format = "@ [$symbol$environment]($style) "
 [crystal]
 symbol = "cr "
 
