@@ -41,7 +41,7 @@ behind = "<"
 diverged = "<>"
 renamed = "r"
 deleted = "x"
-style = "fg:#C86770"
+style = "fg:#76BCBC"
 
 [hostname]
 disabled = false
