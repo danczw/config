@@ -16,7 +16,7 @@ add_newline = false
 
 [character]
 success_symbol = "[>](bold fg:#76BCBC)"
-error_symbol = "[x](bold fg:#C86770)"
+error_symbol = "[>](bold fg:#C86770)"
 vimcmd_symbol = "[<](bold fg:#76BCBC)"
 
 [cmd_duration]
