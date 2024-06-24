@@ -95,6 +95,7 @@ symbol = "cobol "
 symbol = ""
 style ="fg:#717884"
 format = "[@ $symbol$environment]($style) "
+
 [crystal]
 symbol = "cr "
 
@@ -246,6 +247,8 @@ symbol = "rb "
 
 [rust]
 symbol = "rs "
+format = '[ | $symbol($version )]($style)'
+style = "fg:#717884"
 
 [scala]
 symbol = "scala "
