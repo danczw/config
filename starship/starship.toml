@@ -6,11 +6,13 @@
 # [└─>](bold green) '''
 
 # prompt format
-format = "$all"
-right_format = """$username$hostname$time"""
+# format = "$all"
+# right_format = """$username$hostname$time"""
+format = "$directory$character"
+right_format = "$all"
 
 # Inserts a blank line between shell prompts
-add_newline = true
+add_newline = false
 
 [character]
 success_symbol = "[>](bold fg:#76BCBC)"
@@ -28,9 +30,10 @@ style = "fg:#EBEBEB"
 read_only = " [x]"
 
 [git_branch]
-symbol = "git "
-format = '[$symbol$branch(:$remote_branch)]($style) '
-style = "fg:#D6B077"
+symbol = "g: "
+format = '[ | $symbol$branch(:$remote_branch)]($style)'
+# style = "fg:#D6B077"
+style = "fg:#717884"
 
 [git_commit]
 tag_symbol = " tag "
@@ -41,25 +44,27 @@ behind = "<"
 diverged = "<>"
 renamed = "r"
 deleted = "x"
-style = "fg:#76BCBC"
+format = ' ([\[$all_status$ahead_behind\]]($style))'
+# style = "fg:#76BCBC"
+style = "fg:#717884"
 
 [hostname]
 disabled = false
 ssh_only = false
-format = '[$hostname |]($style)'
+format = '[$hostname]($style)'
 style = "fg:#717884"
 
 [line_break]
 disabled = true
 
 [python]
-format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+format = '[ | ${symbol}${pyenv_prefix}(${version} )(\($virtualenv\))]($style)'
 symbol = "py "
 style = "fg:#717884"
 
 [time]
 disabled = false
-format = '[ $time ]($style) '
+format = '[ | $time]($style) '
 style = "fg:#717884"
 
 [username]
