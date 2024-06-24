@@ -47,6 +47,13 @@ alias ... = cd ../..
 alias .... = cd ../../..
 alias home = cd ~
 
+# environment
+def --env lenv [] {
+    let env_toml = open .env | from toml;
+    print $"Loading .env - ($env_toml)";
+    load-env $env_toml;
+}
+
 # python
 alias venv = sh -i -c '. venv/bin/activate ; nu'
 
