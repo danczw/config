@@ -21,7 +21,7 @@ mkdir -p ~/.config/
 if ask "alacritty.toml?"; then
     mkdir -p ~/.config/alacritty/
     rm -f ~/.config/alacritty/alacritty.toml
-    ln -s "$(realpath "alacritty/config.kdl")" ~/.config/alacritty/alacritty.toml
+    ln -s "$(realpath "alacritty/alacritty.toml")" ~/.config/alacritty/alacritty.toml
 fi
 
 # zellij conf
