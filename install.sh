@@ -29,10 +29,14 @@ if ask "zellij config.kdl?"; then
     mkdir -p ~/.config/zellij/
     rm -f ~/.config/zellij/config.kdl
     ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
+
+    # mkdir -p ~/.config/zellij/layouts/
+    # rm -f ~/.config/zellij/layouts/default.kdl
+    # ln -s "$(realpath "zellij/layouts/default.kdl")" ~/.config/zellij/layouts/default.kdl
 fi
 
 # nu shell conf
-if ask "nushell config.nu, env.nu and nu scripts?"; then
+if ask "nushell config.nu, env.nu & nu scripts?"; then
     mkdir -p ~/.config/nushell/
 
     rm -f ~/.config/nushell/config.nu
