@@ -24,7 +24,7 @@ format = "[$duration]($style) "
 style = "fg:#717884"
 
 [directory]
-truncation_length = 3
+truncation_length = 1
 truncation_symbol = "…/"
 style = "fg:#EBEBEB"
 read_only = " [x]"
