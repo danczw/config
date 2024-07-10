@@ -1,20 +1,20 @@
 [window]
-padding ={ x = 0, y = 0 }
+padding = { x = 0, y = 0 }
 opacity = 1
 
 [font]
 size = 10.5
 
 [colors.primary]
-background = "#2B303A"
-foreground = "#EBEBEB"
+background = "#242936"
+foreground = "#cccac2"
 
 [colors.normal]
-black = "#1D1F23"
-blue = "#6D8CC5"
-cyan = "#76BCBC"
-green = "#8AAC72"
-magenta = "#A86FAE"
-red = "#C86770"
-white = "#EBEBEB"
-yellow = "#d6b077"
+black = "#1a1f29"
+blue = "#73d0ff"
+cyan = "#51e3e3"
+green = "#d5ff80"
+magenta = "#dfbfff"
+red = "#f28779"
+white = "#cccac2"
+yellow = "#ffcc77"
