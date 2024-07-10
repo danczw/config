@@ -1,4 +1,4 @@
-mytheme:
+my_repo_theme:
     background: "#2B303A"
     foreground: "#EBEBEB"
     black: "#1D1F23"
@@ -10,7 +10,7 @@ mytheme:
     orange: "#D6B077"
     red: "#C86770"
     white: "#EBEBEB"
-    yellow: "#d6b077"
+    yellow: "#D6B077"
 
 ayu_mirage:
     background: "#242936"
@@ -31,12 +31,12 @@ muted:
     background: "#2B303A"
     foreground: "#CCCAC2"
     black: "#222324"
-    blue: "#465c83"
+    blue: "#465C83"
     cyan: "#468183"
-    green: "#46834a"
+    green: "#526e54"
     grey: "#4a4b4f"
-    magenta: "#7c4683"
+    magenta: "#7C4683"
     orange: "#836946"
     red: "#834646"
-    white: "#e0ded9"
+    white: "#E0DED9"
     yellow: "#838346"
