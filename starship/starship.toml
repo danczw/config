@@ -32,7 +32,6 @@ read_only = " [x]"
 [git_branch]
 symbol = "g: "
 format = '[ | $symbol$branch(:$remote_branch)]($style)'
-# style = "fg:#D6B077"
 style = "fg:#717884"
 
 [git_commit]
@@ -45,7 +44,6 @@ diverged = "<>"
 renamed = "r"
 deleted = "x"
 format = '( [\[$all_status$ahead_behind\]]($style))'
-# style = "fg:#76BCBC"
 style = "fg:#717884"
 
 [hostname]
