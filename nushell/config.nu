@@ -76,7 +76,7 @@ let dark_theme = {
     # color for nushell primitives
     separator: $my_white
     leading_trailing_space_bg: { attr: n } # no fg, no bg, attr none effectively turns this off
-    header: { fg: $my_green attr: b }
+    header: { fg: $my_green }
     empty: $my_blue
     # Closures can be used to choose colors for specific values.
     # The value (in this case, a bool) is piped into the closure.
@@ -92,47 +92,47 @@ let dark_theme = {
     nothing: $my_white
     binary: $my_white
     cell-path: $my_white
-    row_index: { fg: $my_grey attr: b }
+    row_index: { fg: $my_grey }
     record: $my_white
     list: $my_white
     block: $my_white
     hints: $my_grey
     search_result: { bg: $my_red fg: $my_white }
-    shape_and: { fg: $my_magenta attr: b }
-    shape_binary: { fg: $my_magenta attr: b }
-    shape_block: { fg: $my_blue attr: b }
+    shape_and: { fg: $my_magenta }
+    shape_binary: { fg: $my_magenta }
+    shape_block: { fg: $my_blue }
     shape_bool: $my_cyan
-    shape_closure: { fg: $my_green attr: b }
+    shape_closure: { fg: $my_green }
     shape_custom: $my_green
-    shape_datetime: { fg: $my_cyan attr: b}
+    shape_datetime: { fg: $my_cyan }
     shape_directory: $my_cyan
     shape_external: $my_cyan
-    shape_externalarg: { fg: $my_green attr: b }
-    shape_external_resolved: { fg: $my_yellow attr: b }
+    shape_externalarg: { fg: $my_green }
+    shape_external_resolved: { fg: $my_yellow }
     shape_filepath: $my_cyan
-    shape_flag: { fg: $my_blue attr: b }
-    shape_float: { fg: $my_magenta attr: b }
+    shape_flag: { fg: $my_blue }
+    shape_float: { fg: $my_magenta }
     # shapes are used to change the cli syntax highlighting
-    shape_garbage: { fg: $my_white bg: red attr: b }
-    shape_globpattern: { fg: $my_cyan attr: b}
-    shape_int: { fg: $my_magenta attr: b }
-    shape_internalcall: { fg: $my_cyan attr: b}
-    shape_keyword: { fg: $my_cyan attr: b}
-    shape_list: { fg: $my_cyan attr: b}
+    shape_garbage: { fg: $my_white bg: $my_red }
+    shape_globpattern: { fg: $my_cyan }
+    shape_int: { fg: $my_magenta }
+    shape_internalcall: { fg: $my_cyan }
+    shape_keyword: { fg: $my_cyan }
+    shape_list: { fg: $my_cyan }
     shape_literal: $my_blue
     shape_match_pattern: $my_green
     shape_matching_brackets: { attr: u }
     shape_nothing: $my_cyan
     shape_operator: $my_yellow
-    shape_or: { fg: $my_magenta attr: b }
-    shape_pipe: { fg: $my_magenta attr: b }
-    shape_range: { fg: $my_yellow attr: b }
-    shape_record: { fg: $my_cyan attr: b}
-    shape_redirection: { fg: $my_magenta attr: b }
-    shape_signature: { fg: $my_green attr: b }
+    shape_or: { fg: $my_magenta }
+    shape_pipe: { fg: $my_magenta }
+    shape_range: { fg: $my_yellow }
+    shape_record: { fg: $my_cyan }
+    shape_redirection: { fg: $my_magenta }
+    shape_signature: { fg: $my_green }
     shape_string: $my_green
-    shape_string_interpolation: { fg: $my_cyan attr: b}
-    shape_table: { fg: $my_blue attr: b }
+    shape_string_interpolation: { fg: $my_cyan }
+    shape_table: { fg: $my_blue }
     shape_variable: $my_magenta
     shape_vardecl: $my_magenta
 }
@@ -178,7 +178,7 @@ let light_theme = {
     shape_flag: blue_bold
     shape_float: purple_bold
     # shapes are used to change the cli syntax highlighting
-    shape_garbage: { fg: white bg: red attr: b}
+    shape_garbage: { fg: white bg: red }
     shape_globpattern: cyan_bold
     shape_int: purple_bold
     shape_internalcall: cyan_bold
