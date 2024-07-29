@@ -55,7 +55,7 @@ style = "fg:#717884"
 disabled = true
 
 [python]
-format = '[ | ${symbol}${pyenv_prefix}(${version} )(\($virtualenv\))]($style)'
+format = '[ | (\($virtualenv\))]($style)'
 symbol = "py "
 style = "fg:#717884"
 
