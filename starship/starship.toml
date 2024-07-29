@@ -47,8 +47,7 @@ format = '( [\[$all_status$ahead_behind\]]($style))'
 style = "fg:#717884"
 
 [hostname]
-disabled = false
-ssh_only = false
+disabled = true
 format = '[$hostname]($style)'
 style = "fg:#717884"
 
@@ -66,8 +65,7 @@ format = '[ | $time]($style) '
 style = "fg:#717884"
 
 [username]
-disabled = false
-show_always = true
+disabled = true
 format = '[$user@]($style)'
 style_user = "fg:#717884"
 
