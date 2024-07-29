@@ -25,7 +25,8 @@ style = "fg:#717884"
 
 [directory]
 truncation_length = 1
-truncation_symbol = "…/"
+# truncation_symbol = "…/"
+truncation_symbol = " /"
 style = "fg:#717884"
 read_only = " [x]"
 
