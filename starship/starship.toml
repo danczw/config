@@ -32,11 +32,11 @@ read_only = " [x]"
 
 [git_branch]
 symbol = "g: "
-format = '[ | $symbol$branch(:$remote_branch)]($style)'
+format = '[$symbol$branch(:$remote_branch)]($style) '
 style = "fg:#717884"
 
 [git_commit]
-tag_symbol = " tag "
+tag_symbol = "tag "
 
 [git_status]
 ahead = ">"
@@ -44,31 +44,27 @@ behind = "<"
 diverged = "<>"
 renamed = "r"
 deleted = "x"
-format = '( [\[$all_status$ahead_behind\]]($style))'
+format = '([\[$all_status$ahead_behind\]]($style)) '
 style = "fg:#717884"
 
 [hostname]
 disabled = true
-format = '[$hostname]($style)'
-style = "fg:#717884"
 
 [line_break]
 disabled = true
 
 [python]
-format = '[ | (\($virtualenv\))]($style)'
+format = '[(\($virtualenv\))]($style) '
 symbol = "py "
 style = "fg:#717884"
 
 [time]
 disabled = false
-format = '[ | $time]($style) '
+format = '[$time]($style) '
 style = "fg:#717884"
 
 [username]
 disabled = true
-format = '[$user@]($style)'
-style_user = "fg:#717884"
 
 # ------------------------
 # removing further symbols
@@ -244,7 +240,7 @@ symbol = "rb "
 
 [rust]
 symbol = "rs "
-format = '[ | $symbol($version )]($style)'
+format = '[$symbol($version )]($style)'
 style = "fg:#717884"
 
 [scala]
