@@ -90,13 +90,13 @@ fi
 if [ -f "$NUSH" ]; then
     SH="$NUSH"
 fi
-echo "Using $SH"
+echo ":: Using $SH as selected shell"
 
 # starship.rs conf
 if ask "starship.toml?"; then
     rm -f ~/.config/starship.toml
     ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
-    echo 'Note: Make sure to add equivalent of > $eval "$(starship init bash)" < to your shell config'
+    echo ':: Make sure to add equivalent of > $eval "$(starship init bash)" < to your shell config'
 fi
 
 echo "---"
