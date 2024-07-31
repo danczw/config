@@ -17,6 +17,22 @@ function ask() {
 #-------------------------------------------------------------------------------
 mkdir -p ~/.config/
 
+auto=false
+
+while getopts 'a' option; do
+    case $option in
+        a) auto=true ;;
+        *) auto=false ;;
+    esac
+done
+
+if $auto;
+then
+    echo ":: Auto setup"
+else
+    echo ":: Manual setup"
+fi
+
 # alacritty conf
 if ask "alacritty.toml?"; then
     mkdir -p ~/.config/alacritty/
