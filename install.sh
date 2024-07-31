@@ -15,7 +15,6 @@ function ask() {
 }
 
 #-------------------------------------------------------------------------------
-mkdir -p ~/.config/
 
 auto=false
 
@@ -26,25 +25,45 @@ while getopts 'a' option; do
     esac
 done
 
-if $auto;
-then
-    echo ":: Auto setup"
+if $auto; then
+    echo "!! Auto setup"
 else
     echo ":: Manual setup"
 fi
 
+#-------------------------------------------------------------------------------
+mkdir -p ~/.config/
+
 # alacritty conf
-if ask "alacritty.toml?"; then
+if $auto; then
+    set_alacritty=true
+elif ask "alacritty.toml?"; then
+    set_alacritty=true
+else
+    set_alacritty=false
+fi
+
+if $set_alacritty; then
     mkdir -p ~/.config/alacritty/
     rm -f ~/.config/alacritty/alacritty.toml
     ln -s "$(realpath "alacritty/alacritty.toml")" ~/.config/alacritty/alacritty.toml
+    echo ":: alacritty.toml linked"
 fi
 
 # zellij conf
-if ask "zellij config.kdl?"; then
+if $auto; then
+    set_zellij=true
+elif ask "zellij config.kdl?"; then
+    set_zellij=true
+else
+    set_zellij=false
+fi
+
+if $set_zellij; then
     mkdir -p ~/.config/zellij/
     rm -f ~/.config/zellij/config.kdl
     ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
+    echo ":: zellij config.kdl linked"
 
     # mkdir -p ~/.config/zellij/layouts/
     # rm -f ~/.config/zellij/layouts/default.kdl
@@ -52,7 +71,15 @@ if ask "zellij config.kdl?"; then
 fi
 
 # nu shell conf
-if ask "nushell config.nu, env.nu & nu scripts?"; then
+if $auto; then
+    set_nushell=true
+elif ask "nushell config.nu, env.nu & nu scripts?"; then
+    set_nushell=true
+else
+    set_nushell=false
+fi
+
+if $set_nushell; then
     mkdir -p ~/.config/nushell/
 
     rm -f ~/.config/nushell/config.nu
@@ -64,10 +91,23 @@ if ask "nushell config.nu, env.nu & nu scripts?"; then
     ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
     ln -s "$(realpath "nushell/git-completions.nu")" ~/.config/nushell/git-completions.nu
     ln -s "$(realpath "nushell/conda.nu")" ~/.config/nushell/conda.nu
+
+    echo ":: nushell config.nu linked"
+    echo ":: nushell env.nu linked"
+    echo ":: nushell git-completions.nu linked"
+    echo ":: nushell conda.nu linked"
 fi
 
 # helix conf
-if ask "hexlix config.toml and mytheme.toml?"; then
+if $auto; then
+    set_helix=true
+elif ask "hexlix config.toml and mytheme.toml?"; then
+    set_helix=true
+else
+    set_helix=false
+fi
+
+if $set_helix; then
     mkdir -p ~/.config/helix/
     mkdir -p ~/.config/helix/themes/
 
@@ -76,9 +116,33 @@ if ask "hexlix config.toml and mytheme.toml?"; then
 
     ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
     ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
+
+    echo ":: helix config.toml linked"
+    echo ":: helix mytheme.toml linked"
+fi
+
+# starship.rs conf
+if $auto; then
+    set_starship=true
+elif ask "starship.toml?"; then
+    set_starship=true
+else
+    set_starship=false
+fi
+
+if $set_starship; then
+    rm -f ~/.config/starship.toml
+    ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
+
+    echo ":: starship.toml linked"
+    echo '!! Make sure to add equivalent of > $eval "$(starship init bash)" < to your shell config'
 fi
 
 #-------------------------------------------------------------------------------
+if $auto; then
+    exit
+fi
+
 # Check what shell is being used
 SH="${HOME}/.bashrc"
 ZSHRC="${HOME}/.zshrc"
@@ -90,16 +154,10 @@ fi
 if [ -f "$NUSH" ]; then
     SH="$NUSH"
 fi
-echo ":: Using $SH as selected shell"
 
-# starship.rs conf
-if ask "starship.toml?"; then
-    rm -f ~/.config/starship.toml
-    ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
-    echo ':: Make sure to add equivalent of > $eval "$(starship init bash)" < to your shell config'
-fi
+echo
+echo ":: Using $SH as selected shell config file"
 
-echo "---"
 # check selected shell
 if ask "bash dotfiles in $SH?"; then
     echo >> $SH
