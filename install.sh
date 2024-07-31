@@ -1,6 +1,8 @@
 # !/bin/bash
 # Install script for the dotfiles
-# based on https://github.com/bartekspitza/dotfiles
+
+NORMAL='\e[0m'
+RED='\e[31m'
 
 # Ask Y/n
 function ask() {
@@ -26,7 +28,7 @@ while getopts 'a' option; do
 done
 
 if $auto; then
-    echo "!! Auto setup"
+    echo -e "${RED}!!${NORMAL} Auto setup"
 else
     echo ":: Manual setup"
 fi
@@ -135,7 +137,7 @@ if $set_starship; then
     ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
 
     echo ":: starship.toml linked"
-    echo '!! Make sure to add equivalent of > $eval "$(starship init bash)" < to your shell config'
+    echo -e "${RED}!!${NORMAL} Make sure to add equivalent of > \$eval '\$(starship init bash)' < to your shell config"
 fi
 
 #-------------------------------------------------------------------------------
