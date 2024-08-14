@@ -88,16 +88,19 @@ if $set_nushell; then
     rm -f ~/.config/nushell/env.nu
     rm -f ~/.config/nushell/git-completions.nu
     rm -f ~/.config/nushell/conda.nu
+    rm -f ~/.config/nushell/ayu-mirage.nu
 
     ln -s "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
     ln -s "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
     ln -s "$(realpath "nushell/git-completions.nu")" ~/.config/nushell/git-completions.nu
     ln -s "$(realpath "nushell/conda.nu")" ~/.config/nushell/conda.nu
+    ln -s "$(realpath "nushell/ayu-mirage.nu")" ~/.config/nushell/ayu-mirage.nu
 
     echo ":: nushell config.nu linked"
     echo ":: nushell env.nu linked"
     echo ":: nushell git-completions.nu linked"
     echo ":: nushell conda.nu linked"
+    echo ":: nushell ayu-mirage.nu linked"
 fi
 
 # helix conf
