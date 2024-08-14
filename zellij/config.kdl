@@ -94,12 +94,25 @@ themes {
         white "#EBEBEB"
         yellow "#d6b077"
     }
+    ayu_mirage {
+        bg "#1f2430"
+        fg "#cccac2"
+        black "#1a1f29"
+        blue "#73d0ff"
+        cyan "#444b55"
+        green "#d5ff80"
+        magenta "#dfbfff"
+        orange "#ffad66"
+        red "#f28779"
+        white "#c7c7c7"
+        yellow "#ffcc77"
+    }
 }
 
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "my_zellij"
+theme "ayu_mirage"
 
 // The name of the default layout to load on startup
 // Default: "default"
