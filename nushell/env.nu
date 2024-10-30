@@ -6,5 +6,5 @@ $env.PROMPT_INDICATOR_VI_NORMAL = "〉"
 $env.PROMPT_MULTILINE_INDICATOR = "::: "
 $env.PATH = ($env.PATH | split row (char esep) | append $"($env.HOME)/.cargo/bin")
 $env.CONDA_NO_PROMPT = true
-$env.VISUAL = helix
-$env.EDITOR = helix
+$env.VISUAL = "helix"
+$env.EDITOR = "helix"
