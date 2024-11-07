@@ -1,0 +1,5 @@
+# ssh multiplexing - using same SSH connection for multiple sessions
+Host *
+    ControlPath /tmp/ssh-%r@%h:%p
+    ControlMaster auto
+    ControlPersist 10m
