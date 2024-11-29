@@ -3,4 +3,4 @@ inherits = "ayu_mirage"
 # [palette]
 # white = "#EBEBEB"
 
-"ui.virtual.ruler" = { bg = "bg1" }
+"ui.virtual.ruler" = { bg = "#1F2430" }

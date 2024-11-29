@@ -3,7 +3,7 @@ theme = "mytheme"
 [editor]
 cursorline = true
 bufferline = "multiple"
-rulers = [120]
+rulers = [80]
 true-color = true
 
 [editor.cursor-shape]
