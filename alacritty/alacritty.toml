@@ -18,7 +18,7 @@ offset = { x = 0, y = 3 }
 
 [keyboard]
 bindings = [
-  {key = "Q", mods = "Control|Shift", action = "Quit"}
+  {key = "W", mods = "Control|Shift", action = "Quit"}
 ]
 
 [window]
