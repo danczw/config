@@ -22,6 +22,8 @@ bindings = [
 ]
 
 [window]
-decorations = "None"
-padding = { x = 2, y = 2 }
+# decorations = "None"
+title = ""
+dynamic_title = false
 opacity = 0.99
+padding = { x = 2, y = 2 }
