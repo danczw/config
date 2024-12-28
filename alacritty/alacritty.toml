@@ -1,11 +1,3 @@
-[window]
-padding = { x = 0, y = 0 }
-opacity = 0.99
-
-[font]
-size = 10
-offset = { x = 0, y = 3 }
-
 [colors.primary]
 background = "#242936"
 foreground = "#cccac2"
@@ -19,3 +11,12 @@ magenta = "#dfbfff"
 red = "#f28779"
 white = "#cccac2"
 yellow = "#ffcc77"
+
+[font]
+size = 10
+offset = { x = 0, y = 3 }
+
+[window]
+decorations = "None"
+padding = { x = 2, y = 2 }
+opacity = 0.99
