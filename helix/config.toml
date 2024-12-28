@@ -1,11 +1,11 @@
 theme = "mytheme"
 
 [editor]
-cursorline = true
 bufferline = "multiple"
+cursorline = true
+line-number = "relative"
 rulers = [80]
 true-color = true
-line-number = "relative"
 
 [editor.cursor-shape]
 insert = "bar"
@@ -15,6 +15,9 @@ select = "underline"
 [editor.indent-guides]
 character = "╎"
 render = true
+
+[editor.file-picker]
+hidden = false
 
 [editor.statusline]
 left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator", "version-control"]
