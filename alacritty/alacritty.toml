@@ -16,6 +16,11 @@ yellow = "#ffcc77"
 size = 10
 offset = { x = 0, y = 3 }
 
+[keyboard]
+bindings = [
+  {key = "Q", mods = "Control|Shift", action = "Quit"}
+]
+
 [window]
 decorations = "None"
 padding = { x = 2, y = 2 }
