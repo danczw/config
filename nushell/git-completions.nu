@@ -1,8 +1,9 @@
 # based on https://github.com/nushell/nu_scripts/tree/main/custom-completions/git
 
 
+
 def "nu-complete git available upstream" [] {
-  ^git branch -a | lines | each { |line| $line | str replace '\* ' "" | str trim }
+  ^git branch --no-color -a | lines | each { |line| $line | str replace '* ' "" | str trim }
 }
 
 def "nu-complete git remotes" [] {
@@ -26,12 +27,12 @@ def "nu-complete git commits current branch" [] {
 
 # Yield local branches like `main`, `feature/typo_fix`
 def "nu-complete git local branches" [] {
-  ^git branch | lines | each { |line| $line | str replace '* ' "" | str trim }
+  ^git branch --no-color | lines | each { |line| $line | str replace '* ' "" | str trim }
 }
 
 # Yield remote branches like `origin/main`, `upstream/feature-a`
 def "nu-complete git remote branches with prefix" [] {
-  ^git branch -r | lines | parse -r '^\*?(\s*|\s*\S* -> )(?P<branch>\S*$)' | get branch | uniq
+  ^git branch --no-color -r | lines | parse -r '^\*?(\s*|\s*\S* -> )(?P<branch>\S*$)' | get branch | uniq
 }
 
 # Yield remote branches *without* prefix which do not have a local counterpart.
@@ -42,7 +43,7 @@ def "nu-complete git remote branches nonlocal without prefix" [] {
   # for the two remotes `origin` and `upstream`.
   let remotes_regex = (["(", ((nu-complete git remotes | each {|r| [$r, '/'] | str join}) | str join "|"), ")"] | str join)
   let local_branches = (nu-complete git local branches)
-  ^git branch -r | lines | parse -r (['^[\* ]+', $remotes_regex, '?(?P<branch>\S+)'] | flatten | str join) | get branch | uniq | where {|branch| $branch != "HEAD"} | where {|branch| $branch not-in $local_branches }
+  ^git branch --no-color -r | lines | parse -r (['^[\* ]+', $remotes_regex, '?(?P<branch>\S+)'] | flatten | str join) | get branch | uniq | where {|branch| $branch != "HEAD"} | where {|branch| $branch not-in $local_branches }
 }
 
 def "nu-complete git switch" [] {
@@ -84,7 +85,7 @@ def "nu-complete git stash-list" [] {
 }
 
 def "nu-complete git tags" [] {
-  ^git tag | lines
+  ^git tag --no-color | lines
 }
 
 # See `man git-status` under "Short Format"
@@ -128,7 +129,7 @@ def "nu-complete git built-in-refs" [] {
 }
 
 def "nu-complete git refs" [] {
-  nu-complete git switchable branches
+  nu-complete git local branches
   | parse "{value}"
   | insert description Branch
   | append (nu-complete git tags | parse "{value}" | insert description Tag)
@@ -136,7 +137,7 @@ def "nu-complete git refs" [] {
 }
 
 def "nu-complete git files-or-refs" [] {
-  nu-complete git switchable branches
+  nu-complete git local branches
   | parse "{value}"
   | insert description Branch
   | append (nu-complete git files | where description == "Modified" | select value)
@@ -431,7 +432,6 @@ export extern "git commit" [
   --all(-a)                                           # automatically stage all modified and deleted files
   --amend                                             # amend the previous commit rather than adding a new one
   --message(-m): string                               # specify the commit message rather than opening an editor
-  --no-edit                                           # don't edit the commit message (useful with --amend)
   --reuse-message(-C): string                         # reuse the message from a previous commit
   --reedit-message(-c): string                        # reuse and edit message from a commit
   --fixup: string                                     # create a fixup/amend commit
@@ -456,7 +456,6 @@ export extern "git commit" [
   --cleanup: string                                   # cleanup commit message
   --edit(-e)                                          # edit commit message
   --no-edit                                           # do not edit commit message
-  --amend                                             # amend previous commit
   --include(-i)                                       # include given paths in commit
   --only(-o)                                          # commit only specified paths
   --pathspec-from-file: string                        # read pathspec from file
@@ -540,7 +539,7 @@ export extern "git stash drop" [
 
 # Create a new git repository
 export extern "git init" [
-  --initial-branch(-b)                                # initial branch name
+  --initial-branch(-b): string                         # initial branch name
 ]
 
 # List or manipulate tags
@@ -591,6 +590,8 @@ export extern "git worktree" [
 
 # create a new working tree
 export extern "git worktree add" [
+  path: path            # directory to clone the branch
+  branch: string@"nu-complete git available upstream" # Branch to clone
   --help(-h)            # display the help message for this command
   --force(-f)           # checkout <branch> even if already checked out in other worktree
   -b                    # create a new branch
@@ -615,8 +616,14 @@ export extern "git worktree list" [
   ...args
 ]
 
+def "nu-complete worktree list" [] {
+  ^git worktree list | to text | parse --regex '(?P<value>\S+)\s+(?P<commit>\w+)\s+(?P<description>\S.*)'
+}
+
 # prevent a working tree from being pruned
 export extern "git worktree lock" [
+  worktree: string@"nu-complete worktree list"
+  --reason: string      # reason because the tree is locked
   --help(-h)            # display the help message for this command
   --reason              # reason for locking
   ...args
@@ -640,13 +647,14 @@ export extern "git worktree prune" [
 
 # remove a working tree
 export extern "git worktree remove" [
+  worktree: string@"nu-complete worktree list"
   --help(-h)            # display the help message for this command
   --force(-f)           # force removal even if worktree is dirty or locked
-  ...args
 ]
 
 # allow working tree to be pruned, moved or deleted
 export extern "git worktree unlock" [
+  worktree: string@"nu-complete worktree list"
   ...args
 ]
 
@@ -676,7 +684,7 @@ export extern "git clone" [
   --upload-pack(-u): string     # use <upload-pack> as the path in the other end when using ssh
   --template: string            # use <template-dir> as the templates directory
   --config(-c): string          # set a <key>=<value> config variable
-  --depth: int                  # shallow clone <depth> commits 
+  --depth: int                  # shallow clone <depth> commits
   --shallow-since: string       # shallow clone commits newer than =<date>
   --shallow-exclude: string     # do not clone commits reachable from <revision> (branch or tag)
   --single-branch               # clone commit history from a single branch
@@ -690,4 +698,81 @@ export extern "git clone" [
   --separate-git-dir: string    # place the clone at =<git dir> and link it here
   --jobs(-j): int               # number of simultaneous submodules fetch
   ...args
+]
+
+# Restores files in working tree or index to previous versions
+export extern "git restore" [
+  --help(-h)                                    # Display the help message for this command
+  --source(-s)                                  # Restore the working tree files with the content from the given tree
+  --patch(-p)                                   # Interactively choose hunks to restore
+  --worktree(-W)                                # Restore working tree (default if neither --worktree or --staged is used)
+  --staged(-S)                                  # Restore index
+  --quiet(-q)                                   # Quiet, suppress feedback messages
+  --progress                                    # Force progress reporting
+  --no-progress                                 # Suppress progress reporting
+  --ours                                        # Restore from index using our version for unmerged files
+  --theirs                                      # Restore from index using their version for unmerged files
+  --merge(-m)                                   # Restore from index and recreate the conflicted merge in unmerged files
+  --conflict: string                            # Like --merge but changes the conflict presentation with =<style>
+  --ignore-unmerged                             # Restore from index and ignore unmerged entries (unmerged files are left as is)
+  --ignore-skip-worktree-bits                   # Ignore sparse checkout patterns and unconditionally restores any files in <pathspec>
+  --recurse-submodules                          # Restore the contents of sub-modules in working tree
+  --no-recurse-submodules                       # Do not restore the contents of sub-modules in working tree (default)
+  --overlay                                     # Do not remove files that don't exist when restoring from tree with --source
+  --no-overlay                                  # Remove files that don't exist when restoring from tree with --source (default)
+  --pathspec-from-file: string                  # Read pathspec from file
+  --pathspec-file-nul                           # Separate pathspec elements with NUL character when reading from file
+  ...pathspecs: string@"nu-complete git files"  # Target pathspecs to restore
+]
+
+# Print lines matching a pattern
+export extern "git grep" [
+  --help(-h)                            # Display the help message for this command
+  --cached                              # Search blobs registered in the index file instead of worktree
+  --untracked                           # Include untracked files in search
+  --no-index                            # Similar to `grep -r`, but with additional benefits, such as using pathspec patterns to limit paths; Cannot be used together with --cached or --untracked
+  --no-exclude-standard                 # Include ignored files in search (only useful with --untracked)
+  --exclude-standard                    # No not include ignored files in search (only useful with --no-index)
+  --recurse-submodules                  # Recursively search in each submodule that is active and checked out
+  --text(-a)                            # Process binary files as if they were text
+  --textconv                            # Honor textconv filter settings
+  --no-textconv                         # Do not honor textconv filter settings (default)
+  --ignore-case(-i)                     # Ignore case differences between patterns and files
+  -I                                    # Don’t match the pattern in binary files
+  --max-depth: int                      # Max <depth> to descend down directories for each pathspec. A value of -1 means no limit.
+  --recursive(-r)                       # Same as --max-depth=-1
+  --no-recursive                        # Same as --max-depth=0
+  --word-regexp(-w)                     # Match the pattern only at word boundary
+  --invert-match(-v)                    # Select non-matching lines
+  -H                                    # Suppress filename in output of matched lines
+  --full-name                           # Force relative path to filename from top directory
+  --extended-regexp(-E)                 # Use POSIX extended regexp for patterns
+  --basic-regexp(-G)                    # Use POSIX basic regexp for patterns (default)
+  --perl-regexp(-P)                     # Use Perl-compatible regular expressions for patterns
+  --line-number(-n)                     # Prefix the line number to matching lines
+  --column                              # Prefix the 1-indexed byte-offset of the first match from the start of the matching line
+  --files-with-matches(-l)              # Print filenames of files that contains matches
+  --name-only                           # Same as --files-with-matches
+  --files-without-match(-L)             # Print filenames of files that do not contain matches
+  --null(-z)                            # Use \0 as the delimiter for pathnames in the output, and print them verbatim
+  --only-matching(-o)                   # Print only the matched (non-empty) parts of a matching line, with each such part on a separate output line
+  --count(-c)                           # Instead of showing every matched line, show the number of lines that match
+  --no-color                            # Same as --color=never
+  --break                               # Print an empty line between matches from different files.
+  --heading                             # Show the filename above the matches in that file instead of at the start of each shown line.
+  --show-function(-p)                   # Show the preceding line that contains the function name of the match, unless the matching line is a function name itself.
+  --context(-C): int                    # Show <num> leading and trailing lines, and place a line containing -- between contiguous groups of matches.
+  --after-context(-A): int              # Show <num> trailing lines, and place a line containing -- between contiguous groups of matches.
+  --before-context(-B): int             # Show <num> leading lines, and place a line containing -- between contiguous groups of matches.
+  --function-context(-W)                # Show the surrounding text from the previous line containing a function name up to the one before the next function name
+  --max-count(-m): int                  # Limit the amount of matches per file. When using the -v or --invert-match option, the search stops after the specified number of non-matches.
+  --threads: int                        # Number of grep worker threads to use. Use --help for more information on grep threads.
+  -f: string                            # Read patterns from <file>, one per line.
+  -e: string                            # Next parameter is the pattern. Multiple patterns are combined by --or.
+  --and                                 # Search for lines that match multiple patterns.
+  --or                                  # Search for lines that match at least one of multiple patterns. --or is implied between patterns without --and or --not.
+  --not                                 # Search for lines that does not match pattern.
+  --all-match                           # When giving multiple pattern expressions combined with --or, this flag is specified to limit the match to files that have lines to match all of them.
+  --quiet(-q)                           # Do not output matched lines; instead, exit with status 0 when there is a match and with non-zero status when there isn’t.
+  ...pathspecs: string                  # Target pathspecs to limit the scope of the search.
 ]
