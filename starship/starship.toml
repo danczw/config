@@ -15,9 +15,9 @@ right_format = "$all"
 add_newline = false
 
 [character]
-success_symbol = "[›](bold fg:#D5FF80)"
-error_symbol = "[›](bold fg:#F28779)"
-vimcmd_symbol = "[‹](bold fg:#76BCBC)"
+success_symbol = "[❯](bold fg:#D5FF80)"
+error_symbol = "[❯](bold fg:#F28779)"
+vimcmd_symbol = "[❮](bold fg:#76BCBC)"
 
 [cmd_duration]
 format = "[$duration]($style) "
