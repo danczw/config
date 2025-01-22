@@ -56,7 +56,7 @@ def --env lenv [] {
 }
 
 # python
-alias venv = sh -i -c '. venv/bin/activate ; nu'
+alias venv = sh -i -c '. .venv/bin/activate ; nu'
 
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
