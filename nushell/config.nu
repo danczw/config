@@ -81,11 +81,6 @@ $env.config = {
         show_empty: false # show 'empty list' and 'empty record' placeholders for command output
     }
 
-    history: {
-        file_format: "sqlite" # "sqlite" or "plaintext"
-        isolation: false # only available with sqlite file_format. true enables history isolation, false disables it. true will allow the history to be isolated to the current session using up/down arrows. false will allow the history to be shared across all sessions.
-    }
-
     filesize: {
         metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
     }
