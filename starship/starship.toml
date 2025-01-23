@@ -28,6 +28,11 @@ vimcmd_symbol = "[❮](bold fg:#76BCBC)"
 format = "[$duration]($style) "
 style = "fg:#717884"
 
+[conda]
+symbol = ""
+style ="fg:#565B66"
+format = "[$symbol$environment]($style) "
+
 [directory]
 truncation_length = 1
 truncation_symbol = " /"
@@ -62,6 +67,11 @@ format = '[(\($virtualenv\))]($style) '
 symbol = "py "
 style = "fg:#565B66"
 
+[rust]
+symbol = "rs "
+format = '[$symbol($version )]($style)'
+style = "fg:#565B66"
+
 [time]
 disabled = false
 format = '[$time]($style) '
@@ -83,11 +93,6 @@ symbol = "C "
 
 [cobol]
 symbol = "cobol "
-
-[conda]
-symbol = ""
-style ="fg:#565B66"
-format = "[$symbol$environment]($style) "
 
 [crystal]
 symbol = "cr "
@@ -237,11 +242,6 @@ symbol = "raku "
 
 [ruby]
 symbol = "rb "
-
-[rust]
-symbol = "rs "
-format = '[$symbol($version )]($style)'
-style = "fg:#565B66"
 
 [scala]
 symbol = "scala "
