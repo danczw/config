@@ -15,7 +15,7 @@ right_format = "$all"
 add_newline = false
 
 [aws]
-symbol = "aws "
+symbol = "aws: "
 format = ' [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
 style = 'fg:#565B66'
 
