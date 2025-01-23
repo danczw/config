@@ -14,6 +14,11 @@ right_format = "$all"
 # Inserts a blank line between shell prompts
 add_newline = false
 
+[aws]
+symbol = "aws "
+format = ' [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+style = 'fg:#565B66'
+
 [character]
 success_symbol = "[❯](bold fg:#D5FF80)"
 error_symbol = "[❯](bold fg:#F28779)"
@@ -67,10 +72,6 @@ disabled = true
 
 # ------------------------
 # removing further symbols
-[aws]
-symbol = "aws "
-# disabled = true
-
 [azure]
 symbol = "az "
 
