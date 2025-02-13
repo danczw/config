@@ -1,6 +1,4 @@
 # Nushell Config File
-#
-# version = "0.89.0"
 
 # >----- Scripts -----<
 source ~/.config/nushell/git-completions.nu
@@ -79,10 +77,6 @@ $env.config = {
     table: {
         mode: none # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
         show_empty: false # show 'empty list' and 'empty record' placeholders for command output
-    }
-
-    filesize: {
-        metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
     }
 
     use_ansi_coloring: true
