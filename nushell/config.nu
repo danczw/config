@@ -1,9 +1,10 @@
 # Nushell Config File
 
 # >----- Scripts -----<
-source ~/.config/nushell/git-completions.nu
 source ~/.config/nushell/ayu-mirage.nu
-use ~/.config/nushell/conda.nu
+source ~/.config/nushell/cargo-completions.nu
+source ~/.config/nushell/conda.nu
+source ~/.config/nushell/git-completions.nu
 
 # >----- Prompt -----<
 $env.STARSHIP_SHELL = "nu"
