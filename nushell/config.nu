@@ -20,13 +20,13 @@ def create_right_transient_prompt [] {
     let time_segment = ([(date now | format date '%H:%M:%S ')] | str join)
     let prompt = $"(ansi { fg: '#606670'})($time_segment)"
     $prompt
-
 }
 
 # Use nushell functions to define your right and left prompt
 $env.PROMPT_COMMAND = { create_left_prompt }
 $env.PROMPT_COMMAND_RIGHT = { create_right_prompt }
 $env.TRANSIENT_PROMPT_COMMAND_RIGHT = { $"(ansi { fg: '#606670'})('‹ ')" }
+# $env.TRANSIENT_PROMPT_COMMAND_RIGHT = { create_right_prompt }
 
 # >----- Aliases -----<
 # git
