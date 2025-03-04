@@ -48,12 +48,14 @@ style = "fg:#565B66"
 tag_symbol = "tag "
 
 [git_status]
-ahead = ">"
-behind = "<"
-diverged = "<>"
-renamed = "r"
-deleted = "x"
-format = '([\[$all_status$ahead_behind\]]($style)) '
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](fg:#FFAD66) ($ahead_behind$stashed)]($style)"
 style = "fg:#565B66"
 
 [hostname]
