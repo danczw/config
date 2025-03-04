@@ -55,7 +55,7 @@ staged = "​"
 renamed = "​"
 deleted = "​"
 stashed = "≡"
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](fg:#FFAD66) ($ahead_behind$stashed)]($style)"
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](fg:#FFAD66) ($ahead_behind$stashed)]($style) "
 style = "fg:#565B66"
 
 [hostname]
