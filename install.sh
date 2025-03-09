@@ -84,19 +84,12 @@ fi
 if $set_nushell; then
     mkdir -p ~/.config/nushell/
 
-    ln -sf "$(realpath "nushell/ayu-mirage.nu")" ~/.config/nushell/ayu-mirage.nu
-    ln -sf "$(realpath "nushell/cargo-completions.nu")" ~/.config/nushell/cargo-completions.nu
-    ln -sf "$(realpath "nushell/conda.nu")" ~/.config/nushell/conda.nu
-    ln -sf "$(realpath "nushell/config.nu")" ~/.config/nushell/config.nu
-    ln -sf "$(realpath "nushell/env.nu")" ~/.config/nushell/env.nu
-    ln -sf "$(realpath "nushell/git-completions.nu")" ~/.config/nushell/git-completions.nu
+    nu_files=("ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu")
 
-    echo ":: nushell ayu-mirage.nu linked"
-    echo ":: nushell cargo-completions.nu linked"
-    echo ":: nushell conda.nu linked"
-    echo ":: nushell config.nu linked"
-    echo ":: nushell env.nu linked"
-    echo ":: nushell git-completions.nu linked"
+    for file in "${nu_files[@]}"; do
+        ln -sf "$(realpath "nushell/$file")" "$HOME/.config/nushell/$file"
+        echo ":: nushell $file linked"
+    done
 fi
 
 # helix conf
