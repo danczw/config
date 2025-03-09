@@ -19,11 +19,13 @@ function ask() {
 #-------------------------------------------------------------------------------
 
 auto=false
+dl_files=false
 
-while getopts 'a' option; do
+while getopts 'al' option; do
     case $option in
         a) auto=true ;;
-        *) auto=false ;;
+        l) dl_files=true;;
+        *) continue
     esac
 done
 
@@ -52,6 +54,7 @@ if $set_alacritty; then
     echo ":: alacritty.toml linked"
 fi
 
+#-------------------------------------------------------------------------------
 # zellij conf
 if $auto; then
     set_zellij=true
@@ -72,7 +75,12 @@ if $set_zellij; then
     # ln -s "$(realpath "zellij/layouts/default.kdl")" ~/.config/zellij/layouts/default.kdl
 fi
 
+#-------------------------------------------------------------------------------
 # nu shell conf
+CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
+CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
+GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
+
 if $auto; then
     set_nushell=true
 elif ask "nushell config.nu, env.nu & nu scripts?"; then
@@ -92,6 +100,7 @@ if $set_nushell; then
     done
 fi
 
+#-------------------------------------------------------------------------------
 # helix conf
 if $auto; then
     set_helix=true
@@ -115,6 +124,7 @@ if $set_helix; then
     echo ":: helix mytheme.toml linked"
 fi
 
+#-------------------------------------------------------------------------------
 # starship.rs conf
 if $auto; then
     set_starship=true
