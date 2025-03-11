@@ -40,6 +40,9 @@ alias gps = git push
 alias gst = git stash
 alias gsw = git switch
 
+alias ga. = git add .
+alias gap = git add -p
+
 # list
 alias ll = ls -la
 
