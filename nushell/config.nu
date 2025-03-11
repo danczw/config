@@ -38,6 +38,7 @@ alias gc = git commit
 alias gpl = git pull
 alias gps = git push
 alias gst = git stash
+alias gsw = git switch
 
 # list
 alias ll = ls -la
