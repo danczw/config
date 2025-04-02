@@ -1,16 +1,33 @@
-[colors.primary]
-background = "#242936"
-foreground = "#cccac2"
+# in windows under c/Users/<user_name>/AppData/Roaming/alacritty
 
+# Colors (Ayu Mirage)
+# Default Colors
+[colors.primary]
+background = "#1f2430"
+foreground = "#cbccc6"
+bright_foreground = "#f28779"
+
+# Normal colors
 [colors.normal]
-black = "#1a1f29"
-blue = "#73d0ff"
-cyan = "#51e3e3"
-green = "#d5ff80"
-magenta = "#dfbfff"
-red = "#f28779"
-white = "#cccac2"
-yellow = "#ffcc77"
+black = "#212733"
+red = "#f08778"
+green = "#53bf97"
+yellow = "#fdcc60"
+blue = "#60b8d6"
+magenta = "#ec7171"
+cyan = "#98e6ca"
+white = "#fafafa"
+
+# Bright colors
+[colors.bright]
+black = "#686868"
+red = "#f58c7d"
+green = "#58c49c"
+yellow = "#ffd165"
+blue = "#65bddb"
+magenta = "#f17676"
+cyan = "#9debcf"
+white = "#ffffff"
 
 [font]
 size = 10
@@ -25,5 +42,5 @@ bindings = [
 # decorations = "None"
 title = ""
 dynamic_title = false
-opacity = 0.99
+opacity = 0.96
 padding = { x = 2, y = 2 }
