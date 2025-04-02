@@ -68,32 +68,6 @@ pane_frames false
 // Once these themes are defined, one of them should to be selected in the "theme" section of this file
 //
 themes {
-    my_zellij {
-        bg "#2B303A"
-        fg "#EBEBEB"
-        black "#1D1F23"
-        blue "#5F74AD"
-        cyan "#5FA8AD"
-        green "#95b580"
-        magenta "#A25FAD"
-        orange "#AD8E5F"
-        red "#AD5F5F"
-        white "#EBEBEB"
-        yellow "#d6b077"
-    }
-    my_repo_theme {
-        bg "#2B303A"
-        fg "#EBEBEB"
-        black "#1D1F23"
-        blue "#6D8CC5"
-        cyan "#76BCBC"
-        green "#8AAC72"
-        magenta "#A86FAE"
-        orange "#D6B077"
-        red "#C86770"
-        white "#EBEBEB"
-        yellow "#d6b077"
-    }
     ayu_mirage {
         bg "#1f2430"
         fg "#cccac2"
