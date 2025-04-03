@@ -30,19 +30,19 @@ style = "fg:#717884"
 
 [conda]
 symbol = ""
-style ="fg:#565B66"
+style ="fg:#686868"
 format = "[$symbol$environment]($style) "
 
 [directory]
 truncation_length = 1
 truncation_symbol = " /"
-style = "fg:#565B66"
+style = "fg:#686868"
 read_only = " [x]"
 
 [git_branch]
 symbol = "g: "
 format = '[$symbol$branch(:$remote_branch)]($style) '
-style = "fg:#565B66"
+style = "fg:#686868"
 
 [git_commit]
 tag_symbol = "tag "
@@ -56,7 +56,7 @@ renamed = "​"
 deleted = "​"
 stashed = "≡"
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](fg:#FFAD66) ($ahead_behind$stashed)]($style) "
-style = "fg:#565B66"
+style = "fg:#686868"
 
 [hostname]
 disabled = true
@@ -67,18 +67,18 @@ disabled = true
 [python]
 format = '[(\($virtualenv\))]($style) '
 symbol = "py "
-style = "fg:#565B66"
+style = "fg:#686868"
 
 [rust]
 symbol = "rs "
 format = '[$symbol($version )]($style)'
-style = "fg:#565B66"
+style = "fg:#686868"
 
 [time]
 disabled = false
 format = '[$time]($style) '
 time_format = "%R"
-style = "fg:#565B66"
+style = "fg:#686868"
 
 [username]
 disabled = true

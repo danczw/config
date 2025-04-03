@@ -18,7 +18,7 @@ def create_right_prompt [] {
 
 def create_right_transient_prompt [] {
     let time_segment = ([(date now | format date '%H:%M:%S ')] | str join)
-    let prompt = $"(ansi { fg: '#606670'})($time_segment)"
+    let prompt = $"(ansi { fg: '#686868'})($time_segment)"
     $prompt
 }
 
