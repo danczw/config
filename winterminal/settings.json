@@ -42,10 +42,10 @@
     {
         "defaults":
         {
-            "colorScheme": "dcz",
+            "colorScheme": "Ayu Mirage",
             "font":
             {
-                "size": 8.0
+                "size": 10.0
             }
         },
         "list":
@@ -112,6 +112,27 @@
             "selectionBackground": "#484E5B",
             "white": "#DADADA",
             "yellow": "#E19925"
+        },
+        {
+            "background" : "#1f2430",
+            "black" : "#191e2a",
+            "blue" : "#6dcbfa",
+            "brightBlack" : "#686868",
+            "brightBlue" : "#73d0ff",
+            "brightCyan" : "#95e6cb",
+            "brightGreen" : "#bae67e",
+            "brightPurple" : "#d4bfff",
+            "brightRed" : "#f28779",
+            "brightWhite" : "#ffffff",
+            "brightYellow" : "#ffd580",
+            "cyan" : "#90e1c6",
+            "foreground" : "#cbccc6",
+            "green" : "#a6cc70",
+            "name" : "Ayu Mirage",
+            "purple" : "#cfbafa",
+            "red" : "#ed8274",
+            "white" : "#c7c7c7",
+            "yellow" : "#fad07b"
         }
     ],
     "themes": []
