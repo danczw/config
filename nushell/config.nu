@@ -44,6 +44,7 @@ alias ga. = git add .
 alias gap = git add -p
 
 # list
+alias ls = ls -a
 alias ll = ls -la
 
 # misc
