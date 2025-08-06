@@ -1,2 +1,10 @@
+[language-server.ruff]
+command = "ruff"
+
 [language-server.rust-analyzer.config.check]
 command = "clippy"
+
+[[language]]
+name = "python"
+language-server = ["ruff"]
+auto-format = true
