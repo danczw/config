@@ -104,7 +104,7 @@ fi
 # helix conf
 if $auto; then
     set_helix=true
-elif ask "hexlix config.toml and mytheme.toml?"; then
+elif ask "hexlix config.toml, languages.toml and mytheme.toml?"; then
     set_helix=true
 else
     set_helix=false
@@ -116,12 +116,15 @@ if $set_helix; then
 
     rm -f ~/.config/helix/config.toml
     rm -f ~/.config/helix/themes/mytheme.toml
-
+    rm -f ~/.config/helix/languages.toml
+    
     ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
     ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
+    ln -s "$(realpath "helix/languages.toml")" ~/.config/helix/languages.toml
 
     echo ":: helix config.toml linked"
     echo ":: helix mytheme.toml linked"
+    echo ":: helix languages.toml linked"
 fi
 
 #-------------------------------------------------------------------------------
