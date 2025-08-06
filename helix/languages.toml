@@ -6,5 +6,5 @@ command = "clippy"
 
 [[language]]
 name = "python"
-language-server = ["ruff"]
+language-servers = ["ruff"]
 auto-format = true
