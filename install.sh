@@ -77,9 +77,9 @@ fi
 
 #-------------------------------------------------------------------------------
 # nu shell conf
-CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
-CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
-GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
+# CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
+# CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
+# GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
 
 if $auto; then
     set_nushell=true
@@ -143,6 +143,24 @@ if $set_starship; then
 
     echo ":: starship.toml linked"
     echo -e "${RED}!!${NORMAL} Make sure to add equivalent of > \$eval '\$(starship init bash)' < to your shell config"
+fi
+
+#-------------------------------------------------------------------------------
+# zoxide conf
+if $auto; then
+    set_zoxide=true
+elif ask "init zoxide?"; then
+    set_zoxide=true
+else
+    set_zoxide=false
+fi
+
+if $set_zoxide; then
+    zoxide_path=~/.config/nushell/zoxide.nu
+    zoxide_init_cmd="zoxide init nushell | save -f '$zoxide_path'"
+
+    nu -c "$zoxide_init_cmd"
+    echo ":: zoxide initialized"
 fi
 
 #-------------------------------------------------------------------------------

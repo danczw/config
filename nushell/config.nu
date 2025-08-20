@@ -4,6 +4,7 @@
 source ~/.config/nushell/ayu-mirage.nu
 source ~/.config/nushell/cargo-completions.nu
 source ~/.config/nushell/git-completions.nu
+source ~/.config/nushell/zoxide.nu
 use ~/.config/nushell/conda.nu
 
 # >----- Prompt -----<
