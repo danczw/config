@@ -53,6 +53,7 @@ alias ll = ls -la
 alias today = date now
 
 # navigation
+alias cd = z
 alias .. = cd ..
 alias ... = cd ../..
 alias .... = cd ../../..
