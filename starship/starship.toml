@@ -16,7 +16,7 @@ add_newline = false
 
 [aws]
 symbol = "aws: "
-format = ' [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+format = ' [$symbol($profile )(\[$duration\] )]($style)'
 style = 'fg:#565B66'
 
 [character]
