@@ -10,5 +10,5 @@ $env.PATH = (
   append $"(brew --prefix)/opt/llvm/bin"
 )
 $env.CONDA_NO_PROMPT = true
-$env.VISUAL = "helix"
-$env.EDITOR = "helix"
+$env.VISUAL = "hx"
+$env.EDITOR = "hx"
