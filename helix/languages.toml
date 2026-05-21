@@ -7,4 +7,4 @@ command = "clippy"
 [[language]]
 name = "python"
 language-servers = ["ruff"]
-auto-format = true
+auto-format = false
