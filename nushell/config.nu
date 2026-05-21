@@ -59,6 +59,9 @@ alias ... = cd ../..
 alias .... = cd ../../..
 alias home = cd ~
 
+# helix ide
+alias juf = job unfreeze
+
 # environment
 def --env lenv [] {
     let env_toml = open .env | from toml;
