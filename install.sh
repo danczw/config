@@ -29,8 +29,24 @@ while getopts 'al' option; do
     esac
 done
 
+
+set_alacritty=false
+set_helix=false
+set_nushell=false
+set_starship=false
+set_yazi=false
+set_zellij=false
+set_zoxide=false
+
 if $auto; then
     echo -e "${RED}!!${NORMAL} Auto setup"
+
+    set_helix=true
+    set_nushell=true
+    set_starship=true
+    set_yazi=true
+    set_zellij=true
+    set_zoxide=true
 else
     echo ":: Manual setup"
 fi
@@ -39,12 +55,10 @@ mkdir -p ~/.config/
 
 #-------------------------------------------------------------------------------
 # alacritty conf
-if $auto; then
-    set_alacritty=false
-elif ask "alacritty.toml?"; then
-    set_alacritty=true
-else
-    set_alacritty=false
+if ! $auto; then
+    if ask "alacritty.toml?"; then
+        set_alacritty=true
+    fi
 fi
 
 if $set_alacritty; then
@@ -55,38 +69,40 @@ if $set_alacritty; then
 fi
 
 #-------------------------------------------------------------------------------
-# zellij conf
-if $auto; then
-    set_zellij=true
-elif ask "zellij config.kdl?"; then
-    set_zellij=true
-else
-    set_zellij=false
+# helix conf
+if ! $auto; then
+    if ask "hexlix config.toml, languages.toml and mytheme.toml?"; then
+        set_helix=true
+    fi
 fi
 
-if $set_zellij; then
-    mkdir -p ~/.config/zellij/
-    rm -f ~/.config/zellij/config.kdl
-    ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
-    echo ":: zellij config.kdl linked"
+if $set_helix; then
+    mkdir -p ~/.config/helix/
+    mkdir -p ~/.config/helix/themes/
 
-    # mkdir -p ~/.config/zellij/layouts/
-    # rm -f ~/.config/zellij/layouts/default.kdl
-    # ln -s "$(realpath "zellij/layouts/default.kdl")" ~/.config/zellij/layouts/default.kdl
+    rm -f ~/.config/helix/config.toml
+    rm -f ~/.config/helix/themes/mytheme.toml
+    rm -f ~/.config/helix/languages.toml
+
+    ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
+    ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
+    ln -s "$(realpath "helix/languages.toml")" ~/.config/helix/languages.toml
+
+    echo ":: helix config.toml linked"
+    echo ":: helix mytheme.toml linked"
+    echo ":: helix languages.toml linked"
 fi
 
 #-------------------------------------------------------------------------------
-# nu shell conf
+# nushell conf
 # CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
 # CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
 # GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
 
-if $auto; then
-    set_nushell=true
-elif ask "nushell config.nu, env.nu & nu scripts?"; then
-    set_nushell=true
-else
-    set_nushell=false
+if ! $auto; then
+    if ask "nushell config.nu, env.nu & nu scripts?"; then
+        set_nushell=true
+    fi
 fi
 
 if $set_nushell; then
@@ -101,40 +117,27 @@ if $set_nushell; then
 fi
 
 #-------------------------------------------------------------------------------
-# helix conf
-if $auto; then
-    set_helix=true
-elif ask "hexlix config.toml, languages.toml and mytheme.toml?"; then
-    set_helix=true
-else
-    set_helix=false
+# starship.rs conf
+if ! $auto; then
+    if ask "starship.toml?"; then
+        set_starship=true
+    fi
 fi
 
-if $set_helix; then
-    mkdir -p ~/.config/helix/
-    mkdir -p ~/.config/helix/themes/
+if $set_starship; then
+    rm -f ~/.config/starship.toml
+    ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
 
-    rm -f ~/.config/helix/config.toml
-    rm -f ~/.config/helix/themes/mytheme.toml
-    rm -f ~/.config/helix/languages.toml
-    
-    ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
-    ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
-    ln -s "$(realpath "helix/languages.toml")" ~/.config/helix/languages.toml
-
-    echo ":: helix config.toml linked"
-    echo ":: helix mytheme.toml linked"
-    echo ":: helix languages.toml linked"
+    echo ":: starship.toml linked"
+    echo -e "   ${RED}!!${NORMAL} Make sure to add equivalent of > \$eval '\$(starship init bash)' < to your shell config"
 fi
 
 #-------------------------------------------------------------------------------
 # yazi conf
-if $auto; then
-    set_yazi=true
-elif ask "init yazi?"; then
-    set_yazi=true
-else
-    set_yazi=false
+if ! $auto; then
+    if ask "init yazi?"; then
+        set_yazi=true
+    fi
 fi
 
 if $set_yazi; then
@@ -145,31 +148,30 @@ if $set_yazi; then
 fi
 
 #-------------------------------------------------------------------------------
-# starship.rs conf
-if $auto; then
-    set_starship=true
-elif ask "starship.toml?"; then
-    set_starship=true
-else
-    set_starship=false
+# zellij conf
+if ! $auto; then
+    if ask "zellij config.kdl?"; then
+        set_zellij=true
+    fi
 fi
 
-if $set_starship; then
-    rm -f ~/.config/starship.toml
-    ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
+if $set_zellij; then
+    mkdir -p ~/.config/zellij/
+    rm -f ~/.config/zellij/config.kdl
+    ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
+    echo ":: zellij config.kdl linked"
 
-    echo ":: starship.toml linked"
-    echo -e "${RED}!!${NORMAL} Make sure to add equivalent of > \$eval '\$(starship init bash)' < to your shell config"
+    # mkdir -p ~/.config/zellij/layouts/
+    # rm -f ~/.config/zellij/layouts/default.kdl
+    # ln -s "$(realpath "zellij/layouts/default.kdl")" ~/.config/zellij/layouts/default.kdl
 fi
 
 #-------------------------------------------------------------------------------
 # zoxide conf
-if $auto; then
-    set_zoxide=true
-elif ask "init zoxide?"; then
-    set_zoxide=true
-else
-    set_zoxide=false
+if ! $auto; then
+    if ask "init zoxide?"; then
+        set_zoxide=true
+    fi
 fi
 
 if $set_zoxide; then
