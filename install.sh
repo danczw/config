@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # Install script for the dotfiles
 
 NORMAL='\e[0m'
