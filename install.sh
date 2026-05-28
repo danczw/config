@@ -35,12 +35,12 @@ else
     echo ":: Manual setup"
 fi
 
-#-------------------------------------------------------------------------------
 mkdir -p ~/.config/
 
+#-------------------------------------------------------------------------------
 # alacritty conf
 if $auto; then
-    set_alacritty=true
+    set_alacritty=false
 elif ask "alacritty.toml?"; then
     set_alacritty=true
 else
@@ -125,6 +125,23 @@ if $set_helix; then
     echo ":: helix config.toml linked"
     echo ":: helix mytheme.toml linked"
     echo ":: helix languages.toml linked"
+fi
+
+#-------------------------------------------------------------------------------
+# yazi conf
+if $auto; then
+    set_yazi=true
+elif ask "init yazi?"; then
+    set_yazi=true
+else
+    set_yazi=false
+fi
+
+if $set_yazi; then
+    mkdir -p ~/.config/yazi/
+    rm -f ~/.config/yazi/yazi.toml
+    ln -s "$(realpath "yazi/yazi.toml")" ~/.config/yazi/yazi.toml
+    echo ":: yazi yazi.toml linked"
 fi
 
 #-------------------------------------------------------------------------------
