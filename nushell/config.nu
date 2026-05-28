@@ -72,11 +72,25 @@ def --env lenv [] {
 # python
 alias venv = sh -i -c '. .venv/bin/activate ; nu'
 
+
+# >----- yazi wrapper -----<
+# https://yazi-rs.github.io/docs/quick-start#shell-wrapper
+def --env y [...args] {
+    let tmp = (mktemp -t "yazi-cwd.XXXXXX")
+    ^yazi ...$args --cwd-file $tmp
+    let cwd = (open $tmp)
+    if $cwd != $env.PWD and ($cwd | path exists) {
+    cd $cwd
+    }
+    rm -fp $tmp
+}
+
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 
+# >----- config -----<
 $env.config = {
     show_banner: false # true or false to enable or disable the welcome banner at startup
 
