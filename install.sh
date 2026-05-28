@@ -63,15 +63,14 @@ fi
 
 if $set_alacritty; then
     mkdir -p ~/.config/alacritty/
-    rm -f ~/.config/alacritty/alacritty.toml
-    ln -s "$(realpath "alacritty/alacritty.toml")" ~/.config/alacritty/alacritty.toml
+    ln -sf "$(realpath "alacritty/alacritty.toml")" ~/.config/alacritty/alacritty.toml
     echo ":: alacritty.toml linked"
 fi
 
 #-------------------------------------------------------------------------------
 # helix conf
 if ! $auto; then
-    if ask "hexlix config.toml, languages.toml and mytheme.toml?"; then
+    if ask "helix config.toml, languages.toml and mytheme.toml?"; then
         set_helix=true
     fi
 fi
@@ -80,13 +79,9 @@ if $set_helix; then
     mkdir -p ~/.config/helix/
     mkdir -p ~/.config/helix/themes/
 
-    rm -f ~/.config/helix/config.toml
-    rm -f ~/.config/helix/themes/mytheme.toml
-    rm -f ~/.config/helix/languages.toml
-
-    ln -s "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
-    ln -s "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
-    ln -s "$(realpath "helix/languages.toml")" ~/.config/helix/languages.toml
+    ln -sf "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
+    ln -sf "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
+    ln -sf "$(realpath "helix/languages.toml")" ~/.config/helix/languages.toml
 
     echo ":: helix config.toml linked"
     echo ":: helix mytheme.toml linked"
@@ -125,8 +120,7 @@ if ! $auto; then
 fi
 
 if $set_starship; then
-    rm -f ~/.config/starship.toml
-    ln -s "$(realpath "starship/starship.toml")" ~/.config/starship.toml
+    ln -sf "$(realpath "starship/starship.toml")" ~/.config/starship.toml
 
     echo ":: starship.toml linked"
     echo -e "   ${RED}!!${NORMAL} Make sure to add equivalent of > \$eval '\$(starship init bash)' < to your shell config"
@@ -142,8 +136,7 @@ fi
 
 if $set_yazi; then
     mkdir -p ~/.config/yazi/
-    rm -f ~/.config/yazi/yazi.toml
-    ln -s "$(realpath "yazi/yazi.toml")" ~/.config/yazi/yazi.toml
+    ln -sf "$(realpath "yazi/yazi.toml")" ~/.config/yazi/yazi.toml
     echo ":: yazi yazi.toml linked"
 fi
 
@@ -157,8 +150,7 @@ fi
 
 if $set_zellij; then
     mkdir -p ~/.config/zellij/
-    rm -f ~/.config/zellij/config.kdl
-    ln -s "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
+    ln -sf "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
     echo ":: zellij config.kdl linked"
 
     # mkdir -p ~/.config/zellij/layouts/
