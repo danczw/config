@@ -1,12 +1,12 @@
 #!/bin/bash
 # Install script for the dotfiles
 
-NORMAL='\e[0m'
-RED='\e[31m'
+NORMAL=$'\e[0m'
+RED=$'\e[31m'
 
 # Ask Y/n
 function ask() {
-    read -p $'Use \e[31m'"$1"$'\e[0m (Y/n): ' resp
+    read -p "Use ${RED}${1}${NORMAL} (Y/n): " resp
     if [ -z "$resp" ]; then
         response_lc="y" # empty is Yes
     else
@@ -39,7 +39,7 @@ set_zellij=false
 set_zoxide=false
 
 if $auto; then
-    echo -e "${RED}!!${NORMAL} Auto setup"
+    echo -e "${RED}!!${NORMAL} Auto setup\n"
 
     set_helix=true
     set_nushell=true
@@ -129,7 +129,7 @@ fi
 #-------------------------------------------------------------------------------
 # yazi conf
 if ! $auto; then
-    if ask "init yazi?"; then
+    if ask "yazi.toml?"; then
         set_yazi=true
     fi
 fi
