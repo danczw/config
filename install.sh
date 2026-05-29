@@ -31,6 +31,7 @@ done
 
 
 set_alacritty=false
+set_git=false
 set_helix=false
 set_nushell=false
 set_starship=false
@@ -41,6 +42,7 @@ set_zoxide=false
 if $auto; then
     echo -e "${RED}!!${NORMAL} Auto setup\n"
 
+    set_git=true
     set_helix=true
     set_nushell=true
     set_starship=true
@@ -65,6 +67,21 @@ if $set_alacritty; then
     mkdir -p ~/.config/alacritty/
     ln -sf "$(realpath "alacritty/alacritty.toml")" ~/.config/alacritty/alacritty.toml
     echo ":: alacritty.toml linked"
+fi
+
+#-------------------------------------------------------------------------------
+# git conf
+if ! $auto; then
+    if ask "git .gitconfig & .gitignore_global?"; then
+        set_git=true
+    fi
+fi
+
+if $set_git; then
+    ln -sf "$(realpath "git/.gitconfig")" ~/.gitconfig
+    ln -sf "$(realpath "git/.gitignore_global")" ~/.config/alacritty/alacritty.toml
+    echo ":: git .gitconfig linked"
+    echo ":: git .gitignore_global linked"
 fi
 
 #-------------------------------------------------------------------------------

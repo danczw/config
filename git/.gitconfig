@@ -1,0 +1,16 @@
+[user]
+  name = danczw
+  email = github.cdx7q@dcx.cx
+
+[core]
+  editor = hx
+  autocrlf = input
+  pager = less -F -X
+  safecrlf = true
+  excludesfile = ~/.gitignore_global
+
+[pull]
+  rebase = true
+
+[fetch]
+  prune = true

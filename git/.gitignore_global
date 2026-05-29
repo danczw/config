@@ -1,0 +1,14 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Misc
+.cache/
