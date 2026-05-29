@@ -27,8 +27,9 @@ error_symbol = "[❯](bold fg:#F28779)"
 vimcmd_symbol = "[❮](bold fg:#76BCBC)"
 
 [cmd_duration]
-format = "[$duration]($style) "
-style = "fg:#717884"
+min_time = 5000
+format = "[t: $duration]($style) "
+style = "fg:#686868"
 
 [conda]
 symbol = ""
