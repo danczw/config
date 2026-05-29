@@ -129,7 +129,7 @@ fi
 #-------------------------------------------------------------------------------
 # yazi conf
 if ! $auto; then
-    if ask "yazi.toml?"; then
+    if ask "yazi yazi.toml & theme.toml?"; then
         set_yazi=true
     fi
 fi
@@ -137,7 +137,9 @@ fi
 if $set_yazi; then
     mkdir -p ~/.config/yazi/
     ln -sf "$(realpath "yazi/yazi.toml")" ~/.config/yazi/yazi.toml
+    ln -sf "$(realpath "yazi/theme.toml")" ~/.config/yazi/theme.toml
     echo ":: yazi yazi.toml linked"
+    echo ":: yazi theme.toml linked"
 fi
 
 #-------------------------------------------------------------------------------
