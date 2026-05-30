@@ -183,11 +183,12 @@ if ! $auto; then
 fi
 
 if $set_zoxide; then
+    echo -e "${RED}>> Setting up zoxide...${NORMAL}"
     zoxide_path=~/.config/nushell/zoxide.nu
     zoxide_init_cmd="zoxide init nushell | save -f '$zoxide_path'"
 
     nu -c "$zoxide_init_cmd"
-    echo ":: zoxide initialized"
+    echo ":: Linked zoxide.nu"
 fi
 
 #-------------------------------------------------------------------------------
