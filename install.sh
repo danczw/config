@@ -16,8 +16,6 @@ function ask() {
     [ "$response_lc" = "y" ]
 }
 
-#-------------------------------------------------------------------------------
-
 link_file() {
     TARGET="$1"
     LINK_NAME="$2"
@@ -37,6 +35,8 @@ setup_config() {
         link_file "$SRC" "$DEST"
     done
 }
+
+#-------------------------------------------------------------------------------
 
 auto=false
 dl_files=false
@@ -126,6 +126,11 @@ fi
 
 if $set_nushell; then
     setup_config nushell "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu"
+    if nu -c "mkdir (\$nu.data-dir | path join 'vendor/autoload'); starship init nu | save -f (\$nu.data-dir | path join 'vendor/autoload/starship.nu')"; then
+        echo ":: Starship nushell integration initialized"
+    else
+        echo ":: WARNING: Starship nushell init failed — ensure nu and starship are on PATH, then re-run"
+    fi
 fi
 
 #-------------------------------------------------------------------------------
@@ -139,7 +144,7 @@ fi
 if $set_starship; then
     setup_config starship "starship.toml"
     echo -e "${NORMAL}:: Note: Add the equivalent of the following to your shell config:"
-echo -e "   \$eval '\$(starship init bash)'"
+    echo -e "   eval \"\$(starship init bash)\""
 fi
 
 #-------------------------------------------------------------------------------
@@ -190,16 +195,10 @@ if $auto; then
     exit
 fi
 
-# Check what shell is being used
+# Bash dotfiles target: bash/zsh only — never nushell (bash source syntax is invalid in .nu files)
 SH="${HOME}/.bashrc"
-ZSHRC="${HOME}/.zshrc"
-NUSH="${HOME}/.config/nushell/config.nu"
-
-if [ -f "$ZSHRC" ]; then
-	SH="$ZSHRC"
-fi
-if [ -f "$NUSH" ]; then
-    SH="$NUSH"
+if [ -f "${HOME}/.zshrc" ]; then
+    SH="${HOME}/.zshrc"
 fi
 
 echo
@@ -207,15 +206,19 @@ echo ":: Using $SH as selected shell config file"
 
 # check selected shell
 if ask "bash dotfiles in $SH?"; then
-    echo >> $SH
-    echo '# -------------- dotfiles install ---------------' >> $SH
+    if ! grep -q '# -------------- dotfiles install ---------------' "$SH"; then
+        echo >> "$SH"
+        echo '# -------------- dotfiles install ---------------' >> "$SH"
+    fi
 
-    # Ask which files should be sourced
     for file in bash/*; do
         if [ -f "$file" ]; then
             filename=$(basename "$file")
-            if ask "${filename}?"; then
-                echo "source $(realpath "$file")" >> "$SH"
+            filepath="$(realpath "$file")"
+            if grep -qF "source $filepath" "$SH"; then
+                echo ":: Already sourced: $filename"
+            elif ask "${filename}?"; then
+                echo "source $filepath" >> "$SH"
             fi
         fi
     done
