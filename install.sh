@@ -96,6 +96,7 @@ if ! $auto; then
 fi
 
 if $set_git; then
+    echo -e "${RED}>> Setting up git...${NORMAL}"
     link_file "git/.gitconfig" "${HOME}/.gitconfig"
     link_file "git/.gitignore_global" "${HOME}/.gitignore_global"
 fi
