@@ -36,6 +36,40 @@ setup_config() {
     done
 }
 
+download_with_link() {
+    local URL="$1"
+    local DEST="$2"
+    local TMP
+    TMP=$(mktemp)
+    if curl -fsSL "$URL" -o "$TMP"; then
+        { echo "# based on $URL"; echo; cat "$TMP"; } > "$DEST"
+        echo ":: Downloaded $(basename $DEST)"
+    else
+        echo ":: WARNING: Failed to download $(basename $DEST)"
+    fi
+    rm -f "$TMP"
+}
+
+download_nu_completions() {
+    local CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
+    local CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
+    local GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
+
+    if ! command -v curl &>/dev/null; then
+        echo ":: WARNING: curl not found — skipping nu completion download"
+        return
+    fi
+
+    if ! ask "Download nu completions? Existing files will be overwritten"; then
+        return
+    fi
+
+    echo -e "${RED}>> Downloading nu completions...${NORMAL}"
+    download_with_link "$CARGO_COMP_URL" nushell/cargo-completions.nu
+    download_with_link "$CONDA_URL"      nushell/conda.nu
+    download_with_link "$GIT_COMP_URL"   nushell/git-completions.nu
+}
+
 #-------------------------------------------------------------------------------
 
 auto=false
@@ -72,8 +106,6 @@ if $auto; then
 else
     echo ":: Manual setup"
 fi
-
-mkdir -p ~/.config/
 
 #-------------------------------------------------------------------------------
 # alacritty conf
@@ -115,9 +147,9 @@ fi
 
 #-------------------------------------------------------------------------------
 # nushell conf
-# CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
-# CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
-# GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
+if $dl_files; then
+    download_nu_completions
+fi
 
 if ! $auto; then
     if ask "nushell config.nu, env.nu & nu scripts?"; then
@@ -189,39 +221,36 @@ if $set_zoxide; then
     zoxide_init_cmd="zoxide init nushell | save -f '$zoxide_path'"
 
     nu -c "$zoxide_init_cmd"
-    echo ":: Linked zoxide.nu"
+    echo ":: Generated zoxide.nu"
 fi
 
 #-------------------------------------------------------------------------------
-if $auto; then
-    exit
-fi
-
-# Bash dotfiles target: bash/zsh only — never nushell (bash source syntax is invalid in .nu files)
-SH="${HOME}/.bashrc"
-if [ -f "${HOME}/.zshrc" ]; then
-    SH="${HOME}/.zshrc"
-fi
-
-echo
-echo ":: Using $SH as selected shell config file"
-
-# check selected shell
-if ask "bash dotfiles in $SH?"; then
-    if ! grep -q '# -------------- dotfiles install ---------------' "$SH"; then
-        echo >> "$SH"
-        echo '# -------------- dotfiles install ---------------' >> "$SH"
+if ! $auto; then
+    # Bash dotfiles target: bash/zsh only — never nushell (bash source syntax is invalid in .nu files)
+    SH="${HOME}/.bashrc"
+    if [ -f "${HOME}/.zshrc" ]; then
+        SH="${HOME}/.zshrc"
     fi
 
-    for file in bash/*; do
-        if [ -f "$file" ]; then
-            filename=$(basename "$file")
-            filepath="$(realpath "$file")"
-            if grep -qF "source $filepath" "$SH"; then
-                echo ":: Already sourced: $filename"
-            elif ask "${filename}?"; then
-                echo "source $filepath" >> "$SH"
-            fi
+    echo
+    echo ":: Using $SH as selected shell config file"
+
+    if ask "bash dotfiles in $SH?"; then
+        if ! grep -q '# -------------- dotfiles install ---------------' "$SH"; then
+            echo >> "$SH"
+            echo '# -------------- dotfiles install ---------------' >> "$SH"
         fi
-    done
+
+        for file in bash/*; do
+            if [ -f "$file" ]; then
+                filename=$(basename "$file")
+                filepath="$(realpath "$file")"
+                if grep -qF "source $filepath" "$SH"; then
+                    echo ":: Already sourced: $filename"
+                elif ask "${filename}?"; then
+                    echo "source $filepath" >> "$SH"
+                fi
+            fi
+        done
+    fi
 fi
