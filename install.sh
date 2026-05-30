@@ -74,11 +74,16 @@ download_nu_completions() {
     download_with_link "$GIT_COMP_URL"   nushell/git-completions.nu
 }
 
-# In manual mode, ask whether to set up TOOL; in auto mode, proceed unconditionally.
-# Returns 1 if the user declines, 0 if setup ran. Remaining args are passed to setup_config.
+# In manual mode, ask whether to set up TOOL; in auto mode, run only if auto_<tool>=true.
+# Returns 1 if skipped, 0 if setup ran. Remaining args are passed to setup_config.
 maybe_setup() {
     local tool="$1"; local prompt="$2"; shift 2
-    if ! $auto && ! ask "$prompt"; then return 1; fi
+    local auto_var="auto_${tool}"
+    if $auto; then
+        ${!auto_var} || return 1
+    elif ! ask "$prompt"; then
+        return 1
+    fi
     setup_config "$tool" "$@"
 }
 
@@ -95,6 +100,16 @@ while getopts 'al' option; do
     esac
 done
 
+# Tools included in auto setup (-a); set to false to skip a tool without removing it
+auto_alacritty=false  # terminal-specific, opt-in only
+auto_git=true
+auto_helix=true
+auto_nushell=true
+auto_starship=true
+auto_yazi=true
+auto_zellij=true
+auto_zoxide=true
+
 if $auto; then
     echo -e "${RED}:: Auto setup enabled${NORMAL}\n"
 else
@@ -102,14 +117,14 @@ else
 fi
 
 #-------------------------------------------------------------------------------
-# alacritty conf — manual only, skipped in auto (terminal-specific)
-if ! $auto && ask "alacritty.toml?"; then
+# alacritty conf — links to ~ not ~/.config, so handled separately
+if { $auto && $auto_alacritty; } || { ! $auto && ask "alacritty.toml?"; }; then
     setup_config alacritty "alacritty.toml"
 fi
 
 #-------------------------------------------------------------------------------
 # git conf — links to ~ not ~/.config, so handled separately
-if $auto || ask "git .gitconfig & .gitignore_global?"; then
+if { $auto && $auto_git; } || { ! $auto && ask "git .gitconfig & .gitignore_global?"; }; then
     echo -e "${RED}>> Setting up git...${NORMAL}"
     link_file "git/.gitconfig" "${HOME}/.gitconfig"
     link_file "git/.gitignore_global" "${HOME}/.gitignore_global"
@@ -142,7 +157,7 @@ maybe_setup zellij "zellij config.kdl?" "config.kdl"
 
 #-------------------------------------------------------------------------------
 # zoxide — generates a file rather than symlinking, so handled separately
-if $auto || ask "init zoxide?"; then
+if { $auto && $auto_zoxide; } || { ! $auto && ask "init zoxide?"; }; then
     echo -e "${RED}>> Setting up zoxide...${NORMAL}"
     zoxide_path=~/.config/nushell/zoxide.nu
     zoxide_init_cmd="zoxide init nushell | save -f '$zoxide_path'"
