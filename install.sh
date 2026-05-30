@@ -4,18 +4,19 @@
 NORMAL=$'\e[0m'
 RED=$'\e[31m'
 
-# Ask Y/n
-function ask() {
+# Prompt the user with a Y/n question; returns 0 for yes, 1 for no.
+ask() {
     read -p "Use ${RED}${1}${NORMAL} (Y/n): " resp
     if [ -z "$resp" ]; then
-        response_lc="y" # empty is Yes
+        response_lc="y"
     else
-        response_lc=$(echo "$resp" | tr '[:upper:]' '[:lower:]') # case insensitive
+        response_lc=$(echo "$resp" | tr '[:upper:]' '[:lower:]')
     fi
 
     [ "$response_lc" = "y" ]
 }
 
+# Create a symlink from TARGET to LINK_NAME, creating parent dirs as needed.
 link_file() {
     TARGET="$1"
     LINK_NAME="$2"
@@ -24,9 +25,10 @@ link_file() {
     echo ":: Linked $(basename $LINK_NAME)"
 }
 
+# Symlink all given FILES from the TOOL source dir into ~/.config/TOOL/.
 setup_config() {
     TOOL="$1"
-    FILES=("${@:2}") # Accept multiple file names
+    FILES=("${@:2}")
 
     echo -e "${RED}>> Setting up ${TOOL}...${NORMAL}"
     for FILE in "${FILES[@]}"; do
@@ -36,6 +38,7 @@ setup_config() {
     done
 }
 
+# Download URL to DEST, prepending a source comment at the top of the file.
 download_with_link() {
     local URL="$1"
     local DEST="$2"
@@ -50,6 +53,7 @@ download_with_link() {
     rm -f "$TMP"
 }
 
+# Download the latest nu completion scripts from nushell/nu_scripts into nushell/.
 download_nu_completions() {
     local CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
     local CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
@@ -70,6 +74,14 @@ download_nu_completions() {
     download_with_link "$GIT_COMP_URL"   nushell/git-completions.nu
 }
 
+# In manual mode, ask whether to set up TOOL; in auto mode, proceed unconditionally.
+# Returns 1 if the user declines, 0 if setup ran. Remaining args are passed to setup_config.
+maybe_setup() {
+    local tool="$1"; local prompt="$2"; shift 2
+    if ! $auto && ! ask "$prompt"; then return 1; fi
+    setup_config "$tool" "$@"
+}
+
 #-------------------------------------------------------------------------------
 
 auto=false
@@ -83,66 +95,24 @@ while getopts 'al' option; do
     esac
 done
 
-
-set_alacritty=false
-set_git=false
-set_helix=false
-set_nushell=false
-set_starship=false
-set_yazi=false
-set_zellij=false
-set_zoxide=false
-
 if $auto; then
     echo -e "${RED}:: Auto setup enabled${NORMAL}\n"
-
-    set_git=true
-    set_helix=true
-    set_nushell=true
-    set_starship=true
-    set_yazi=true
-    set_zellij=true
-    set_zoxide=true
 else
     echo ":: Manual setup"
 fi
 
 #-------------------------------------------------------------------------------
-# alacritty conf
-if ! $auto; then
-    if ask "alacritty.toml?"; then
-        set_alacritty=true
-    fi
-fi
-
-if $set_alacritty; then
+# alacritty conf — manual only, skipped in auto (terminal-specific)
+if ! $auto && ask "alacritty.toml?"; then
     setup_config alacritty "alacritty.toml"
 fi
 
 #-------------------------------------------------------------------------------
-# git conf
-if ! $auto; then
-    if ask "git .gitconfig & .gitignore_global?"; then
-        set_git=true
-    fi
-fi
-
-if $set_git; then
+# git conf — links to ~ not ~/.config, so handled separately
+if $auto || ask "git .gitconfig & .gitignore_global?"; then
     echo -e "${RED}>> Setting up git...${NORMAL}"
     link_file "git/.gitconfig" "${HOME}/.gitconfig"
     link_file "git/.gitignore_global" "${HOME}/.gitignore_global"
-fi
-
-#-------------------------------------------------------------------------------
-# helix conf
-if ! $auto; then
-    if ask "helix config.toml, languages.toml and mytheme.toml?"; then
-        set_helix=true
-    fi
-fi
-
-if $set_helix; then
-    setup_config helix "config.toml" "mytheme.toml" "languages.toml"
 fi
 
 #-------------------------------------------------------------------------------
@@ -151,14 +121,8 @@ if $dl_files; then
     download_nu_completions
 fi
 
-if ! $auto; then
-    if ask "nushell config.nu, env.nu & nu scripts?"; then
-        set_nushell=true
-    fi
-fi
-
-if $set_nushell; then
-    setup_config nushell "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu"
+if maybe_setup nushell "nushell config.nu, env.nu & nu scripts?" \
+    "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu"; then
     if nu -c "mkdir (\$nu.data-dir | path join 'vendor/autoload'); starship init nu | save -f (\$nu.data-dir | path join 'vendor/autoload/starship.nu')"; then
         echo ":: Starship nushell integration initialized"
     else
@@ -167,55 +131,18 @@ if $set_nushell; then
 fi
 
 #-------------------------------------------------------------------------------
-# starship.rs conf
-if ! $auto; then
-    if ask "starship.toml?"; then
-        set_starship=true
-    fi
-fi
-
-if $set_starship; then
-    setup_config starship "starship.toml"
+if maybe_setup starship "starship.toml?" "starship.toml"; then
     echo -e "${NORMAL}:: Note: Add the equivalent of the following to your shell config:"
     echo -e "   eval \"\$(starship init bash)\""
 fi
 
-#-------------------------------------------------------------------------------
-# yazi conf
-if ! $auto; then
-    if ask "yazi yazi.toml & theme.toml?"; then
-        set_yazi=true
-    fi
-fi
-
-if $set_yazi; then
-    setup_config yazi "yazi.toml" "theme.toml"
-fi
+maybe_setup helix  "helix config.toml, languages.toml and mytheme.toml?" "config.toml" "mytheme.toml" "languages.toml"
+maybe_setup yazi   "yazi yazi.toml & theme.toml?" "yazi.toml" "theme.toml"
+maybe_setup zellij "zellij config.kdl?" "config.kdl"
 
 #-------------------------------------------------------------------------------
-# zellij conf
-if ! $auto; then
-    if ask "zellij config.kdl?"; then
-        set_zellij=true
-    fi
-fi
-
-if $set_zellij; then
-    setup_config zellij "config.kdl"
-    # mkdir -p ~/.config/zellij/layouts/
-    # rm -f ~/.config/zellij/layouts/default.kdl
-    # ln -s "$(realpath "zellij/layouts/default.kdl")" ~/.config/zellij/layouts/default.kdl
-fi
-
-#-------------------------------------------------------------------------------
-# zoxide conf
-if ! $auto; then
-    if ask "init zoxide?"; then
-        set_zoxide=true
-    fi
-fi
-
-if $set_zoxide; then
+# zoxide — generates a file rather than symlinking, so handled separately
+if $auto || ask "init zoxide?"; then
     echo -e "${RED}>> Setting up zoxide...${NORMAL}"
     zoxide_path=~/.config/nushell/zoxide.nu
     zoxide_init_cmd="zoxide init nushell | save -f '$zoxide_path'"
