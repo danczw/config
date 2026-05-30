@@ -1,4 +1,6 @@
-# based on https://github.com/nushell/nu_scripts/blob/main/custom-completions/cargo/cargo-completions.nu
+# based on https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu
+
+## Written by lukexor, Improved by @Dan-Gamin
 
 def "nu-complete cargo targets" [type: string] {
   ^cargo metadata --format-version=1 --offline --no-deps | from json | get packages.targets | flatten | where ($type in $it.kind) | get name
@@ -30,7 +32,7 @@ def "nu-complete cargo features" [] {
 # `cargo --list` is slow, `open` is faster.
 # TODO: Add caching.
 def "nu-complete cargo subcommands" [] {
-  ^cargo --list | lines | skip 1 | str join "\n" | from ssv --noheaders | get column1
+  ^cargo --list | lines | skip 1 | str join "\n" | from ssv --noheaders | get column0
 }
 def "nu-complete cargo vcs" [] {
   [
@@ -584,3 +586,11 @@ export extern "cargo add" [
   --target                # Add as dependency to the given target platform
   ...args
 ]
+
+# Cargo aliases
+export alias "cargo b"  = cargo build
+export alias "cargo c"  = cargo check
+export alias "cargo d"  = cargo doc
+export alias "cargo r"  = cargo run
+export alias "cargo rm" = cargo remove
+export alias "cargo t"  = cargo test
