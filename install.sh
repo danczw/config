@@ -18,6 +18,26 @@ function ask() {
 
 #-------------------------------------------------------------------------------
 
+link_file() {
+    TARGET="$1"
+    LINK_NAME="$2"
+    mkdir -p "$(dirname "$LINK_NAME")"
+    ln -sf "$(realpath "$TARGET")" "$LINK_NAME"
+    echo ":: Linked $(basename $LINK_NAME)"
+}
+
+setup_config() {
+    TOOL="$1"
+    FILES=("${@:2}") # Accept multiple file names
+
+    echo -e "${RED}>> Setting up ${TOOL}...${NORMAL}"
+    for FILE in "${FILES[@]}"; do
+        SRC="${TOOL}/${FILE}"
+        DEST="${HOME}/.config/${TOOL}/${FILE}"
+        link_file "$SRC" "$DEST"
+    done
+}
+
 auto=false
 dl_files=false
 
@@ -40,7 +60,7 @@ set_zellij=false
 set_zoxide=false
 
 if $auto; then
-    echo -e "${RED}!!${NORMAL} Auto setup\n"
+    echo -e "${RED}:: Auto setup enabled${NORMAL}\n"
 
     set_git=true
     set_helix=true
@@ -64,9 +84,7 @@ if ! $auto; then
 fi
 
 if $set_alacritty; then
-    mkdir -p ~/.config/alacritty/
-    ln -sf "$(realpath "alacritty/alacritty.toml")" ~/.config/alacritty/alacritty.toml
-    echo ":: alacritty.toml linked"
+    setup_config alacritty "alacritty.toml"
 fi
 
 #-------------------------------------------------------------------------------
@@ -78,10 +96,8 @@ if ! $auto; then
 fi
 
 if $set_git; then
-    ln -sf "$(realpath "git/.gitconfig")" ~/.gitconfig
-    ln -sf "$(realpath "git/.gitignore_global")" ~/.config/alacritty/alacritty.toml
-    echo ":: git .gitconfig linked"
-    echo ":: git .gitignore_global linked"
+    link_file "git/.gitconfig" "${HOME}/.gitconfig"
+    link_file "git/.gitignore_global" "${HOME}/.gitignore_global"
 fi
 
 #-------------------------------------------------------------------------------
@@ -93,16 +109,7 @@ if ! $auto; then
 fi
 
 if $set_helix; then
-    mkdir -p ~/.config/helix/
-    mkdir -p ~/.config/helix/themes/
-
-    ln -sf "$(realpath "helix/config.toml")" ~/.config/helix/config.toml
-    ln -sf "$(realpath "helix/mytheme.toml")" ~/.config/helix/themes/mytheme.toml
-    ln -sf "$(realpath "helix/languages.toml")" ~/.config/helix/languages.toml
-
-    echo ":: helix config.toml linked"
-    echo ":: helix mytheme.toml linked"
-    echo ":: helix languages.toml linked"
+    setup_config helix "config.toml" "mytheme.toml" "languages.toml"
 fi
 
 #-------------------------------------------------------------------------------
@@ -118,14 +125,7 @@ if ! $auto; then
 fi
 
 if $set_nushell; then
-    mkdir -p ~/.config/nushell/
-
-    nu_files=("ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu")
-
-    for file in "${nu_files[@]}"; do
-        ln -sf "$(realpath "nushell/$file")" "$HOME/.config/nushell/$file"
-        echo ":: nushell $file linked"
-    done
+    setup_config nushell "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu"
 fi
 
 #-------------------------------------------------------------------------------
@@ -137,10 +137,9 @@ if ! $auto; then
 fi
 
 if $set_starship; then
-    ln -sf "$(realpath "starship/starship.toml")" ~/.config/starship.toml
-
-    echo ":: starship.toml linked"
-    echo -e "   ${RED}!!${NORMAL} Make sure to add equivalent of > \$eval '\$(starship init bash)' < to your shell config"
+    setup_config starship "starship.toml"
+    echo -e "${NORMAL}:: Note: Add the equivalent of the following to your shell config:"
+echo -e "   \$eval '\$(starship init bash)'"
 fi
 
 #-------------------------------------------------------------------------------
@@ -152,11 +151,7 @@ if ! $auto; then
 fi
 
 if $set_yazi; then
-    mkdir -p ~/.config/yazi/
-    ln -sf "$(realpath "yazi/yazi.toml")" ~/.config/yazi/yazi.toml
-    ln -sf "$(realpath "yazi/theme.toml")" ~/.config/yazi/theme.toml
-    echo ":: yazi yazi.toml linked"
-    echo ":: yazi theme.toml linked"
+    setup_config yazi "yazi.toml" "theme.toml"
 fi
 
 #-------------------------------------------------------------------------------
@@ -168,10 +163,7 @@ if ! $auto; then
 fi
 
 if $set_zellij; then
-    mkdir -p ~/.config/zellij/
-    ln -sf "$(realpath "zellij/config.kdl")" ~/.config/zellij/config.kdl
-    echo ":: zellij config.kdl linked"
-
+    setup_config zellij "config.kdl"
     # mkdir -p ~/.config/zellij/layouts/
     # rm -f ~/.config/zellij/layouts/default.kdl
     # ln -s "$(realpath "zellij/layouts/default.kdl")" ~/.config/zellij/layouts/default.kdl
