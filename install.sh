@@ -147,7 +147,7 @@ if $dl_files; then
 fi
 
 if maybe_setup nushell "nushell config.nu, env.nu & nu scripts?" \
-    "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu"; then
+    "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu" "ssh-agent.nu"; then
     if nu -c "mkdir (\$nu.data-dir | path join 'vendor/autoload'); starship init nu | save -f (\$nu.data-dir | path join 'vendor/autoload/starship.nu')"; then
         echo ":: Starship nushell integration initialized"
     else
