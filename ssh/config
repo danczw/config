@@ -1,3 +1,6 @@
+# Per-machine host config (identities, per-host overrides). Missing file is OK.
+Include ~/.ssh/config.local
+
 # ssh multiplexing - reuse single connection for multiple sessions
 Host *
     ControlMaster auto
