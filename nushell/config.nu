@@ -52,7 +52,9 @@ def --env lenv [] {
 }
 
 # python
-alias venv = sh -i -c '. .venv/bin/activate ; nu'
+alias venv = overlay use .venv/bin/activate.nu
+alias devenv = overlay hide activate
+alias venv-sh = sh -i -c '. .venv/bin/activate ; nu'
 
 
 # >----- yazi wrapper -----<
