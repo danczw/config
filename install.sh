@@ -162,7 +162,7 @@ if maybe_setup starship "starship.toml?" "starship.toml"; then
 fi
 
 maybe_setup helix  "helix config.toml, languages.toml and mytheme.toml?" "config.toml" "mytheme.toml" "languages.toml"
-maybe_setup yazi   "yazi yazi.toml & theme.toml?" "yazi.toml" "theme.toml"
+maybe_setup yazi   "yazi yazi.toml?" "yazi.toml"
 maybe_setup zellij "zellij config.kdl?" "config.kdl"
 
 #-------------------------------------------------------------------------------
