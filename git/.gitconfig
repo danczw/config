@@ -9,8 +9,23 @@
   safecrlf = true
   excludesfile = ~/.gitignore_global
 
+[init]
+  defaultBranch = main
+
 [pull]
   rebase = true
 
+[push]
+  autoSetupRemote = true
+
 [fetch]
   prune = true
+
+[rebase]
+  autoStash = true
+
+[merge]
+  conflictStyle = zdiff3
+
+[rerere]
+  enabled = true
