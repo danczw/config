@@ -105,6 +105,7 @@ auto_alacritty=false  # terminal-specific, opt-in only
 auto_git=true
 auto_helix=true
 auto_nushell=true
+auto_ssh=true
 auto_starship=true
 auto_yazi=true
 auto_zellij=true
@@ -128,6 +129,15 @@ if { $auto && $auto_git; } || { ! $auto && ask "git .gitconfig & .gitignore_glob
     echo -e "${RED}>> Setting up git...${NORMAL}"
     link_file "git/.gitconfig" "${HOME}/.gitconfig"
     link_file "git/.gitignore_global" "${HOME}/.gitignore_global"
+fi
+
+#-------------------------------------------------------------------------------
+# ssh conf — links to ~/.ssh, plus creates the ControlPath socket directory
+if { $auto && $auto_ssh; } || { ! $auto && ask "ssh config?"; }; then
+    echo -e "${RED}>> Setting up ssh...${NORMAL}"
+    mkdir -p ~/.ssh/cm
+    chmod 700 ~/.ssh ~/.ssh/cm
+    link_file "ssh/config" "${HOME}/.ssh/config"
 fi
 
 #-------------------------------------------------------------------------------
