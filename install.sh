@@ -119,13 +119,13 @@ fi
 
 #-------------------------------------------------------------------------------
 # alacritty conf — links to ~ not ~/.config, so handled separately
-if { $auto && $auto_alacritty; } || { ! $auto && ask "alacritty.toml?"; }; then
+if { $auto && $auto_alacritty; } || { ! $auto && ask "alacritty?"; }; then
     setup_config alacritty "alacritty.toml"
 fi
 
 #-------------------------------------------------------------------------------
 # git conf — links to ~ not ~/.config, so handled separately
-if { $auto && $auto_git; } || { ! $auto && ask "git .gitconfig & .gitignore_global?"; }; then
+if { $auto && $auto_git; } || { ! $auto && ask "git?"; }; then
     echo -e "${RED}>> Setting up git...${NORMAL}"
     link_file "git/.gitconfig" "${HOME}/.gitconfig"
     link_file "git/.gitignore_global" "${HOME}/.gitignore_global"
@@ -133,7 +133,7 @@ fi
 
 #-------------------------------------------------------------------------------
 # ssh conf — links to ~/.ssh, plus creates the ControlPath socket directory
-if { $auto && $auto_ssh; } || { ! $auto && ask "ssh config?"; }; then
+if { $auto && $auto_ssh; } || { ! $auto && ask "ssh?"; }; then
     echo -e "${RED}>> Setting up ssh...${NORMAL}"
     mkdir -p ~/.ssh/cm
     chmod 700 ~/.ssh ~/.ssh/cm
@@ -146,7 +146,7 @@ if $dl_files; then
     download_nu_completions
 fi
 
-if maybe_setup nushell "nushell config.nu, env.nu & nu scripts?" \
+if maybe_setup nushell "nushell?" \
     "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu" "ssh-agent.nu"; then
     if nu -c "mkdir (\$nu.data-dir | path join 'vendor/autoload'); starship init nu | save -f (\$nu.data-dir | path join 'vendor/autoload/starship.nu')"; then
         echo ":: Starship nushell integration initialized"
@@ -156,18 +156,18 @@ if maybe_setup nushell "nushell config.nu, env.nu & nu scripts?" \
 fi
 
 #-------------------------------------------------------------------------------
-if maybe_setup starship "starship.toml?" "starship.toml"; then
+if maybe_setup starship "starship?" "starship.toml"; then
     echo -e "${NORMAL}:: Note: Add the equivalent of the following to your shell config:"
     echo -e "   eval \"\$(starship init bash)\""
 fi
 
-maybe_setup helix  "helix config.toml, languages.toml and mytheme.toml?" "config.toml" "mytheme.toml" "languages.toml"
-maybe_setup yazi   "yazi yazi.toml?" "yazi.toml"
-maybe_setup zellij "zellij config.kdl?" "config.kdl"
+maybe_setup helix  "helix?"  "config.toml" "mytheme.toml" "languages.toml"
+maybe_setup yazi   "yazi?"   "yazi.toml"
+maybe_setup zellij "zellij?" "config.kdl"
 
 #-------------------------------------------------------------------------------
 # zoxide — generates a file rather than symlinking, so handled separately
-if { $auto && $auto_zoxide; } || { ! $auto && ask "init zoxide?"; }; then
+if { $auto && $auto_zoxide; } || { ! $auto && ask "zoxide?"; }; then
     echo -e "${RED}>> Setting up zoxide...${NORMAL}"
     zoxide_path=~/.config/nushell/zoxide.nu
     zoxide_init_cmd="zoxide init nushell | save -f '$zoxide_path'"
