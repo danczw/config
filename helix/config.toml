@@ -2,10 +2,15 @@ theme = "mytheme"
 
 [editor]
 bufferline = "multiple"
+color-modes = true
 cursorline = true
+end-of-line-diagnostics = "hint"
 line-number = "relative"
 rulers = [80]
 true-color = true
+
+[editor.lsp]
+display-inlay-hints = true
 
 [editor.cursor-shape]
 insert = "bar"
