@@ -86,6 +86,11 @@ style = "fg:#686868"
 [username]
 disabled = true
 
+[jobs]
+symbol = "& "
+style = "fg:#686868"
+format = '[$symbol$number]($style) '
+
 [terraform]
 symbol = "tf "
 format = '[$symbol(\[$workspace\])]($style) '
