@@ -11,5 +11,6 @@ $env.PATH = (
   append $"($env.HOME)/.local/share/pi-node/node-v22.22.3-linux-x64/bin"
 )
 $env.CONDA_NO_PROMPT = true
+$env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.VISUAL = "hx"
 $env.EDITOR = "hx"
