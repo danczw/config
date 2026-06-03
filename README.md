@@ -6,17 +6,17 @@ Personal dotfiles for various tools and shells.
 
 ## Contents
 
-- [Alacritty](./alacritty) — terminal emulator
-- [Bash](./bash) — shell
-- [Git](./git) — version control
-- [Helix](./helix) — text editor
-- [Nu Shell](./nushell) — shell
-- [Rio](./rio) — terminal emulator
-- [SSH](./ssh) — ssh config
-- [Starship](./starship) — cross-shell prompt
-- [Winterminal](./winterminal) — terminal emulator
-- [Yazi](./yazi) — file manager
-- [Zellij](./zellij) — terminal multiplexer
+- [Alacritty](https://github.com/alacritty/alacritty) — terminal emulator
+- [Bash](https://www.gnu.org/software/bash/) — shell
+- [Git](https://github.com/git/git) — version control
+- [Helix](https://github.com/helix-editor/helix) — text editor
+- [Nu Shell](https://github.com/nushell/nushell) — shell
+- [Rio](https://github.com/raphamorim/rio) — terminal emulator
+- [SSH](https://github.com/openssh/openssh-portable) — ssh config
+- [Starship](https://github.com/starship/starship) — cross-shell prompt
+- [Windows Terminal](https://github.com/microsoft/terminal) — terminal emulator
+- [Yazi](https://github.com/sxyazi/yazi) — file manager
+- [Zellij](https://github.com/zellij-org/zellij) — terminal multiplexer
 
 Base color palette: `colors.yml` and [coolors.co](https://coolors.co/1d1f23-2b303a-ebebeb-6d8cc5-76bcbc-8aac72-a86fae-d6b077-c86770)
 
