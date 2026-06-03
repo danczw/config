@@ -19,7 +19,7 @@ command_timeout = 1000
 [aws]
 symbol = "aws: "
 format = ' [$symbol($profile )(\[$duration\] )]($style)'
-style = 'fg:#565B66'
+style = 'fg:#686868'
 
 [character]
 success_symbol = "[❯](bold fg:#D5FF80)"
