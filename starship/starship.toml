@@ -86,5 +86,10 @@ style = "fg:#686868"
 [username]
 disabled = true
 
+[terraform]
+symbol = "tf "
+format = '[$symbol(\[$workspace\])]($style) '
+style = "fg:#686868"
+
 [package]
 disabled = true
