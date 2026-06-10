@@ -18,7 +18,7 @@ command_timeout = 1000
 
 [aws]
 symbol = "aws: "
-format = ' [$symbol($profile )(\[$duration\] )]($style)'
+format = '[$symbol($profile )(\[$duration\] )]($style) '
 style = 'fg:#686868'
 
 [character]
@@ -58,7 +58,7 @@ staged = "​"
 renamed = "​"
 deleted = "​"
 stashed = "≡"
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](fg:#FFAD66) ($ahead_behind$stashed)]($style) "
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](fg:#FFAD66)( $ahead_behind$stashed)]($style) "
 style = "fg:#686868"
 
 [hostname]
