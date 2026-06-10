@@ -96,5 +96,8 @@ symbol = "tf "
 format = '[$symbol(\[$workspace\])]($style) '
 style = "fg:#686868"
 
+[battery]
+format = '[$percentage]($style) '
+
 [package]
 disabled = true
