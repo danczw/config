@@ -6,6 +6,7 @@ $env.PROMPT_INDICATOR_VI_NORMAL = "〉"
 $env.PROMPT_MULTILINE_INDICATOR = "::: "
 $env.PATH = (
   $env.PATH | split row (char esep) |
+  append $"($env.HOME)/.local/bin" |
   append $"($env.HOME)/.cargo/bin" |
   append (try { $"(brew --prefix)/opt/llvm/bin" } catch { [] }) |
   append $"($env.HOME)/.local/share/pi-node/node-v22.22.3-linux-x64/bin"
