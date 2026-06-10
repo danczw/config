@@ -93,3 +93,13 @@ $env.config = {
     render_right_prompt_on_last_line: true # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 }
 
+# >----- zellij tab rename -----<
+$env.config.hooks.env_change = {
+    PWD: [{|before, after|
+        if "ZELLIJ" in $env {
+            let name = (do { git rev-parse --show-toplevel } | complete | if $in.exit_code == 0 { $in.stdout | str trim | path basename } else { $after | path basename })
+            zellij action rename-tab $name
+        }
+    }]
+}
+
