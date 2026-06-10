@@ -53,25 +53,21 @@ download_with_link() {
     rm -f "$TMP"
 }
 
-# Download the latest nu completion scripts from nushell/nu_scripts into nushell/.
-download_nu_completions() {
-    local CARGO_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/cargo/cargo-completions.nu"
+# Download nu scripts from nushell/nu_scripts into nushell/.
+download_nu_scripts() {
     local CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
-    local GIT_COMP_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/custom-completions/git/git-completions.nu"
 
     if ! command -v curl &>/dev/null; then
-        echo ":: WARNING: curl not found — skipping nu completion download"
+        echo ":: WARNING: curl not found — skipping nu script download"
         return
     fi
 
-    if ! ask "Download nu completions? Existing files will be overwritten"; then
+    if ! ask "Download nu scripts? Existing files will be overwritten"; then
         return
     fi
 
-    echo -e "${RED}>> Downloading nu completions...${NORMAL}"
-    download_with_link "$CARGO_COMP_URL" nushell/cargo-completions.nu
-    download_with_link "$CONDA_URL"      nushell/conda.nu
-    download_with_link "$GIT_COMP_URL"   nushell/git-completions.nu
+    echo -e "${RED}>> Downloading nu scripts...${NORMAL}"
+    download_with_link "$CONDA_URL" nushell/conda.nu
 }
 
 # In manual mode, ask whether to set up TOOL; in auto mode, run only if auto_<tool>=true.
@@ -143,11 +139,11 @@ fi
 #-------------------------------------------------------------------------------
 # nushell conf
 if $dl_files; then
-    download_nu_completions
+    download_nu_scripts
 fi
 
 if maybe_setup nushell "nushell?" \
-    "ayu-mirage.nu" "cargo-completions.nu" "conda.nu" "config.nu" "env.nu" "git-completions.nu" "ssh-agent.nu"; then
+    "ayu-mirage.nu" "conda.nu" "config.nu" "env.nu" "ssh-agent.nu"; then
     if nu -c "mkdir (\$nu.data-dir | path join 'vendor/autoload'); starship init nu | save -f (\$nu.data-dir | path join 'vendor/autoload/starship.nu')"; then
         echo ":: Starship nushell integration initialized"
     else

@@ -14,3 +14,6 @@ $env.CONDA_NO_PROMPT = true
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.VISUAL = "hx"
 $env.EDITOR = "hx"
+
+mkdir $"($nu.cache-dir)"
+carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"

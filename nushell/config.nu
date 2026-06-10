@@ -2,10 +2,9 @@
 
 # >----- Scripts -----<
 source ~/.config/nushell/ayu-mirage.nu
-source ~/.config/nushell/cargo-completions.nu
-source ~/.config/nushell/git-completions.nu
 source ~/.config/nushell/ssh-agent.nu
 source ~/.config/nushell/zoxide.nu
+source $"($nu.cache-dir)/carapace.nu"
 use ~/.config/nushell/conda.nu
 
 # Prompt is set up by ~/.local/share/nushell/vendor/autoload/starship.nu
