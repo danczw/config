@@ -73,6 +73,9 @@ def --env y [...args] {
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 
+# >----- LS_COLORS fix for WSL mounted dirs (other-writable) -----<
+$env.LS_COLORS = ($env.LS_COLORS | str replace --regex 'ow=[^:]*' 'ow=1;34' | str replace --regex 'tw=[^:]*' 'tw=1;34')
+
 # >----- config -----<
 $env.config = {
     show_banner: false # true or false to enable or disable the welcome banner at startup
@@ -90,6 +93,20 @@ $env.config = {
 
     use_ansi_coloring: true
     render_right_prompt_on_last_line: true # true or false to enable or disable right prompt to be rendered on last line of the prompt.
+
+    menus: [
+        {
+            name: completion_menu
+            only_buffer_difference: false
+            marker: ""
+            type: {
+                layout: columnar
+                columns: 1
+                col_padding: 2
+            }
+            style: {}
+        }
+    ]
 }
 
 # >----- zellij tab rename -----<
