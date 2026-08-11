@@ -110,12 +110,10 @@ $env.config = {
 }
 
 # >----- zellij tab rename -----<
-$env.config.hooks.env_change = {
-    PWD: [{|before, after|
-        if "ZELLIJ" in $env {
-            let name = (do { git rev-parse --show-toplevel } | complete | if $in.exit_code == 0 { $in.stdout | str trim | path basename } else { $after | path basename })
-            zellij action rename-tab $name
-        }
-    }]
-}
+$env.config.hooks.env_change.PWD = ($env.config.hooks.env_change.PWD | append {|before, after|
+    if "ZELLIJ" in $env {
+        let name = (do { git rev-parse --show-toplevel } | complete | if $in.exit_code == 0 { $in.stdout | str trim | path basename } else { $after | path basename })
+        zellij action rename-tab $name
+    }
+})
 
