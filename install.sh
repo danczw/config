@@ -153,7 +153,10 @@ if maybe_setup nushell "nushell?" \
 fi
 
 #-------------------------------------------------------------------------------
-if maybe_setup starship "starship?" "starship.toml"; then
+# starship conf — links to ~/.config/starship.toml (its default path), so handled separately
+if { $auto && $auto_starship; } || { ! $auto && ask "starship?"; }; then
+    echo -e "${RED}>> Setting up starship...${NORMAL}"
+    link_file "starship/starship.toml" "${HOME}/.config/starship.toml"
     echo -e "${NORMAL}:: Note: Add the equivalent of the following to your shell config:"
     echo -e "   eval \"\$(starship init bash)\""
 fi
