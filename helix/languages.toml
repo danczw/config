@@ -1,10 +1,14 @@
 [language-server.ruff]
 command = "ruff"
 
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+
 [language-server.rust-analyzer.config.check]
 command = "clippy"
 
 [[language]]
 name = "python"
-language-servers = ["ruff"]
+language-servers = ["pyright", "ruff"]
 auto-format = false
