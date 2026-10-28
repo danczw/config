@@ -5,10 +5,9 @@ alias ....="cd ../../.."
 alias home="cd ~"
 
 # list
-alias ll="ls -laG"
-alias llt="ls -latrG"
+alias ll="ls -la --color=auto"
+alias llt="ls -latr --color=auto"
 alias lsize="du -a -h --max-depth=1 | sort -hr"
 
 # reload
-alias reload='source ~/.bash_profile'
 alias reloadrc='source ~/.bashrc'
