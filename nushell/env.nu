@@ -11,7 +11,6 @@ $env.PATH = (
   append ($env.HOMEBREW_PREFIX? | default "/home/linuxbrew/.linuxbrew" | path join "opt/llvm/bin") |
   append $"($env.HOME)/.local/share/pi-node/current/bin"
 )
-$env.CONDA_NO_PROMPT = true
 $env.VIRTUAL_ENV_DISABLE_PROMPT = true
 $env.VISUAL = "hx"
 $env.EDITOR = "hx"

@@ -38,38 +38,6 @@ setup_config() {
     done
 }
 
-# Download URL to DEST, prepending a source comment at the top of the file.
-download_with_link() {
-    local URL="$1"
-    local DEST="$2"
-    local TMP
-    TMP=$(mktemp)
-    if curl -fsSL "$URL" -o "$TMP"; then
-        { echo "# based on $URL"; echo; cat "$TMP"; } > "$DEST"
-        echo ":: Downloaded $(basename $DEST)"
-    else
-        echo ":: WARNING: Failed to download $(basename $DEST)"
-    fi
-    rm -f "$TMP"
-}
-
-# Download nu scripts from nushell/nu_scripts into nushell/.
-download_nu_scripts() {
-    local CONDA_URL="https://raw.githubusercontent.com/nushell/nu_scripts/refs/heads/main/modules/virtual_environments/nu_conda_2/conda.nu"
-
-    if ! command -v curl &>/dev/null; then
-        echo ":: WARNING: curl not found — skipping nu script download"
-        return
-    fi
-
-    if ! ask "Download nu scripts? Existing files will be overwritten"; then
-        return
-    fi
-
-    echo -e "${RED}>> Downloading nu scripts...${NORMAL}"
-    download_with_link "$CONDA_URL" nushell/conda.nu
-}
-
 # In manual mode, ask whether to set up TOOL; in auto mode, run only if auto_<tool>=true.
 # Returns 1 if skipped, 0 if setup ran. Remaining args are passed to setup_config.
 maybe_setup() {
@@ -86,12 +54,10 @@ maybe_setup() {
 #-------------------------------------------------------------------------------
 
 auto=false
-dl_files=false
 
-while getopts 'al' option; do
+while getopts 'a' option; do
     case $option in
         a) auto=true ;;
-        l) dl_files=true;;
         *) continue
     esac
 done
@@ -138,12 +104,8 @@ fi
 
 #-------------------------------------------------------------------------------
 # nushell conf
-if $dl_files; then
-    download_nu_scripts
-fi
-
 if maybe_setup nushell "nushell?" \
-    "ayu-mirage.nu" "conda.nu" "config.nu" "env.nu" "ssh-agent.nu"; then
+    "ayu-mirage.nu" "config.nu" "env.nu" "ssh-agent.nu"; then
     # Generated once here instead of on every shell start; re-run after upgrading starship/carapace
     if nu -c "let dir = (\$nu.data-dir | path join 'vendor/autoload'); mkdir \$dir; starship init nu | save -f (\$dir | path join 'starship.nu'); carapace _carapace nushell | save -f (\$dir | path join 'carapace.nu')"; then
         echo ":: Starship and carapace nushell integrations initialized"

@@ -32,11 +32,6 @@ min_time = 5000
 format = "[t: $duration]($style) "
 style = "fg:#686868"
 
-[conda]
-symbol = ""
-style ="fg:#686868"
-format = "[$symbol$environment]($style) "
-
 [directory]
 truncation_length = 1
 truncation_symbol = " /"
