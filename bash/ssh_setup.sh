@@ -1,16 +1,17 @@
-# Run SSH agent
-eval "$(ssh-agent -s)"
+# Start (or reuse) an ssh-agent for this shell. Shares the env file with
+# nushell/ssh-agent.nu so bash and nu use one agent. Keys are added on first
+# use via `AddKeysToAgent yes` in ~/.ssh/config.
+ssh_env_file=~/.cache/nushell/ssh-agent.env
 
-# Iterate through ~/.ssh/ and add all keys to the SSH agent
-for key_file in ~/.ssh/*; do
-    # Check if the file is
-    # - a regular file (not a directory)
-    # - is a key file type id_ed25519 or id_rsa
-    # - and does not have a ".pub" extension
-    if [ -f "$key_file" ] && [[ "$key_file" != *.pub ]] && { [[ "$key_file" == *id_ed25519* ]] || [[ "$key_file" == *id_rsa* ]]; }; then
-        echo "Found key $key_file"
-        # Add the key to the SSH agent
-        ssh-add "$key_file"
-        echo "Added $key_file to the SSH agent"
+ssh_agent_alive() {
+    [ -S "$SSH_AUTH_SOCK" ] && { [ -z "$SSH_AGENT_PID" ] || kill -0 "$SSH_AGENT_PID" 2>/dev/null; }
+}
+
+if ! ssh_agent_alive; then
+    [ -f "$ssh_env_file" ] && . "$ssh_env_file" >/dev/null
+    if ! ssh_agent_alive; then
+        mkdir -p "$(dirname "$ssh_env_file")"
+        ssh-agent -s > "$ssh_env_file"
+        . "$ssh_env_file" >/dev/null
     fi
-done
+fi
