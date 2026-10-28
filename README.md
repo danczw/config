@@ -6,12 +6,10 @@ Personal dotfiles for various tools and shells.
 
 ## Contents
 
-- [Alacritty](https://github.com/alacritty/alacritty) — terminal emulator
 - [Bash](https://www.gnu.org/software/bash/) — shell
 - [Git](https://github.com/git/git) — version control
 - [Helix](https://github.com/helix-editor/helix) — text editor
 - [Nu Shell](https://github.com/nushell/nushell) — shell
-- [Rio](https://github.com/raphamorim/rio) — terminal emulator
 - [SSH](https://github.com/openssh/openssh-portable) — ssh config
 - [Starship](https://github.com/starship/starship) — cross-shell prompt
 - [Windows Terminal](https://github.com/microsoft/terminal) — terminal emulator

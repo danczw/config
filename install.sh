@@ -63,7 +63,6 @@ while getopts 'a' option; do
 done
 
 # Tools included in auto setup (-a); set to false to skip a tool without removing it
-auto_alacritty=false  # terminal-specific, opt-in only
 auto_git=true
 auto_helix=true
 auto_nushell=true
@@ -77,12 +76,6 @@ if $auto; then
     echo -e "${RED}:: Auto setup enabled${NORMAL}\n"
 else
     echo ":: Manual setup"
-fi
-
-#-------------------------------------------------------------------------------
-# alacritty conf — links to ~ not ~/.config, so handled separately
-if { $auto && $auto_alacritty; } || { ! $auto && ask "alacritty?"; }; then
-    setup_config alacritty "alacritty.toml"
 fi
 
 #-------------------------------------------------------------------------------
