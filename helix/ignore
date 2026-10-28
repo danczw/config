@@ -1,0 +1,11 @@
+# Global helix ignore (gitignore syntax), linked to ~/.config/helix/ignore.
+# Skipped by the file picker even though git-ignore = false
+.git/
+.venv/
+venv/
+node_modules/
+target/
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/

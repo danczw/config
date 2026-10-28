@@ -161,7 +161,7 @@ if { $auto && $auto_starship; } || { ! $auto && ask "starship?"; }; then
     echo -e "   eval \"\$(starship init bash)\""
 fi
 
-maybe_setup helix  "helix?"  "config.toml" "mytheme.toml" "languages.toml"
+maybe_setup helix  "helix?"  "config.toml" "mytheme.toml" "languages.toml" "ignore"
 maybe_setup yazi   "yazi?"   "yazi.toml"
 maybe_setup zellij "zellij?" "config.kdl"
 
