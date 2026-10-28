@@ -18,6 +18,3 @@ $env.EDITOR = "hx"
 
 $env.CARAPACE_BRIDGES = 'bash'
 $env.CARAPACE_MATCH = '1'
-
-mkdir $"($nu.cache-dir)"
-carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"

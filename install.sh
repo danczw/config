@@ -144,10 +144,11 @@ fi
 
 if maybe_setup nushell "nushell?" \
     "ayu-mirage.nu" "conda.nu" "config.nu" "env.nu" "ssh-agent.nu"; then
-    if nu -c "mkdir (\$nu.data-dir | path join 'vendor/autoload'); starship init nu | save -f (\$nu.data-dir | path join 'vendor/autoload/starship.nu')"; then
-        echo ":: Starship nushell integration initialized"
+    # Generated once here instead of on every shell start; re-run after upgrading starship/carapace
+    if nu -c "let dir = (\$nu.data-dir | path join 'vendor/autoload'); mkdir \$dir; starship init nu | save -f (\$dir | path join 'starship.nu'); carapace _carapace nushell | save -f (\$dir | path join 'carapace.nu')"; then
+        echo ":: Starship and carapace nushell integrations initialized"
     else
-        echo ":: WARNING: Starship nushell init failed — ensure nu and starship are on PATH, then re-run"
+        echo ":: WARNING: nushell init failed — ensure nu, starship and carapace are on PATH, then re-run"
     fi
 fi
 
