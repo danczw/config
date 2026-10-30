@@ -1,5 +1,5 @@
-// template rendered by bin/rig (fills __MODEL_ARGS__ and __LEAD_PROMPT__); not meant to be loaded directly
-// multi-agent rig: one tab, lead on the left, builder and reviewer stacked on the right
+// template rendered by bin/rig (fills __MODEL_ARGS__ and __GATE_PROMPT__); not meant to be loaded directly
+// multi-agent rig: one tab, gate on the left, exec and watch stacked on the right
 layout {
     // a layout replaces the default bars, so restate them to keep the tab bar visible
     default_tab_template {
@@ -13,15 +13,15 @@ layout {
     }
     tab name="rig" {
         pane split_direction="vertical" {
-            pane name="lead" focus=true size="55%" command="claude" {
-                args "--agent" "rig-lead" "--name" "lead" __MODEL_ARGS__ "__LEAD_PROMPT__"
+            pane name="gate" focus=true size="55%" command="claude" {
+                args "--agent" "rig-gate" "--name" "gate" __MODEL_ARGS__ "__GATE_PROMPT__"
             }
             pane split_direction="horizontal" {
-                pane name="builder" command="claude" {
-                    args "--agent" "rig-builder" "--name" "builder" __MODEL_ARGS__ "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying builder is ready for work. Do nothing else until the lead sends you a task."
+                pane name="exec" command="claude" {
+                    args "--agent" "rig-exec" "--name" "exec" __MODEL_ARGS__ "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying exec is ready and what your role is. Do nothing else until gate sends you a task."
                 }
-                pane name="reviewer" command="claude" {
-                    args "--agent" "rig-reviewer" "--name" "reviewer" __MODEL_ARGS__ "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying reviewer is ready for work. Do nothing else until the lead sends you a task."
+                pane name="watch" command="claude" {
+                    args "--agent" "rig-watch" "--name" "watch" __MODEL_ARGS__ "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying watch is ready and what your role is. Do nothing else until gate sends you a task."
                 }
             }
         }

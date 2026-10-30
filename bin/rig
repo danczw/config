@@ -1,7 +1,7 @@
 #!/bin/bash
 # Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl).
 # Inside zellij it opens a "rig" tab in the current session; outside it starts a new session.
-# An optional message becomes the lead's first task, passed in its startup prompt.
+# An optional message becomes gate's first task, passed in its startup prompt.
 # "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
 # "rig model" types /model into every agent, or one, and confirms the cache dialog; it only lands while the agent is idle.
 # "rig broadcast" sends a message to every agent; it only lands while the agents are idle.
@@ -50,11 +50,11 @@ check_model() {
     }
 }
 
-# Print the layout template with the model flag and the lead's startup prompt filled in (escaped for a KDL string)
+# Print the layout template with the model flag and gate's startup prompt filled in (escaped for a KDL string)
 render_layout() {
     # bash 5.2 would treat & in the replacement as the matched text
     shopt -u patsub_replacement 2>/dev/null
-    local prompt="Startup: wait until both builder and reviewer have sent you a ready message."
+    local prompt="Startup: wait until both exec and watch have sent you a ready message."
     if [ -n "${message//[[:space:]]/}" ]; then
         prompt+=" Then start on this first request from the user: ${message}"
     else
@@ -68,7 +68,7 @@ render_layout() {
     local layout
     layout="$(< "$LAYOUT")"
     layout="${layout//__MODEL_ARGS__/$model_args}"
-    printf '%s\n' "${layout//__LEAD_PROMPT__/$prompt}"
+    printf '%s\n' "${layout//__GATE_PROMPT__/$prompt}"
 }
 
 # Run a zellij action, targeting the rig session when called from outside zellij
