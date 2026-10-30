@@ -80,13 +80,14 @@ else
 fi
 
 #-------------------------------------------------------------------------------
-# claude rig — agent files go to ~/.claude/agents (linked individually to keep existing agents), launcher to ~/.local/bin
+# claude rig — agent files go to ~/.claude/agents (linked individually to keep existing agents), launcher to ~/.local/bin, carapace spec for completion
 if { $auto && $auto_claude; } || { ! $auto && ask "claude rig?"; }; then
     echo -e "${RED}>> Setting up claude rig...${NORMAL}"
     for agent in claude/agents/*.md; do
         link_file "$agent" "${HOME}/.claude/agents/$(basename "$agent")"
     done
     link_file "bin/rig" "${HOME}/.local/bin/rig"
+    link_file "carapace/rig.yaml" "${HOME}/.config/carapace/specs/rig.yaml"
 fi
 
 #-------------------------------------------------------------------------------

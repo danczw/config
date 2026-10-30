@@ -1,0 +1,53 @@
+# carapace spec for bin/rig, linked to ~/.config/carapace/specs/rig.yaml by install.sh
+name: rig
+description: team of claude agents in zellij panes
+commands:
+- name: up
+  description: start the team, or switch to it if it is running
+  flags:
+    -C=: project directory
+    -m=: model alias or id for all agents
+    -p=: permission mode for all agents
+    -t=: team as role[:model[:mode]],...
+  completion:
+    flag:
+      C: ["$directories"]
+      m: ["opus", "sonnet", "haiku", "opusplan"]
+      p: ["acceptEdits", "auto", "dontAsk", "manual", "plan"]
+      t: ["$list(,)", "$(ls ~/.claude/agents | sed -n 's/^rig-\\(.*\\)\\.md$/\\1/p')"]
+- name: down
+  description: close the rig tab or kill the session
+  flags:
+    -C=: project directory
+  completion:
+    flag:
+      C: ["$directories"]
+- name: send
+  description: type a message into one pane and press Enter
+  flags:
+    -C=: project directory
+    --list: list the agent panes
+  completion:
+    flag:
+      C: ["$directories"]
+    positional:
+    - ["$(rig send --list | awk '{print $1}')"]
+- name: model
+  description: type /model into every agent, or one
+  flags:
+    -C=: project directory
+  completion:
+    flag:
+      C: ["$directories"]
+    positional:
+    - ["all", "$(rig send --list | awk '{print $1}')", "opus", "sonnet", "haiku", "opusplan"]
+    - ["opus", "sonnet", "haiku", "opusplan"]
+- name: broadcast
+  description: send a message to every agent
+  flags:
+    -C=: project directory
+  completion:
+    flag:
+      C: ["$directories"]
+- name: help
+  description: show the help text
