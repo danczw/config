@@ -49,10 +49,10 @@ case "$cmd" in
         if [ -n "$ZELLIJ" ]; then
             if zellij action query-tab-names | grep -qxF rig; then
                 warn_running
-                exec zellij action go-to-tab-name rig
+                exec zellij action go-to-tab-name rig > /dev/null
             fi
             set_task
-            exec zellij action new-tab --name rig --cwd "$PWD" --layout "$LAYOUT"
+            exec zellij action new-tab --name rig --cwd "$PWD" --layout "$LAYOUT" > /dev/null
         fi
         if zellij list-sessions --short 2>/dev/null | grep -qxF "$session"; then
             warn_running
@@ -64,7 +64,7 @@ case "$cmd" in
     down)
         rm -f "$TASK_FILE"
         if [ -n "$ZELLIJ" ]; then
-            zellij action go-to-tab-name rig && zellij action close-tab
+            zellij action go-to-tab-name rig > /dev/null && zellij action close-tab > /dev/null
         else
             zellij kill-session "$session"
         fi
