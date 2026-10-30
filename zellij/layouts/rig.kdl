@@ -13,14 +13,14 @@ layout {
     tab name="rig" {
         pane split_direction="vertical" {
             pane name="lead" focus=true size="55%" command="claude" {
-                args "--agent" "rig-lead"
+                args "--agent" "rig-lead" "--name" "lead"
             }
             pane split_direction="horizontal" {
                 pane name="builder" command="claude" {
-                    args "--agent" "rig-builder"
+                    args "--agent" "rig-builder" "--name" "builder" "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying builder is ready for work. Do nothing else until the lead sends you a task."
                 }
                 pane name="reviewer" command="claude" {
-                    args "--agent" "rig-reviewer"
+                    args "--agent" "rig-reviewer" "--name" "reviewer" "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying reviewer is ready for work. Do nothing else until the lead sends you a task."
                 }
             }
         }
