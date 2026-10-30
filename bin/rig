@@ -1,21 +1,64 @@
 #!/bin/bash
-# Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl).
-# Inside zellij it opens a "rig" tab in the current session; outside it starts a new session.
-# An optional message becomes gate's first task, passed in its startup prompt.
-# "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
-# "rig model" types /model into every agent, or one, and confirms the cache dialog; it only lands while the agent is idle.
-# "rig broadcast" sends a message to every agent; it only lands while the agents are idle.
-# The team is "gate" plus 1-5 workers: -t role[:model[:mode]],... or .rig.toml ([[agent]] tables with role, model, mode)
-# in the project dir, else gate,exec,watch. A role's model and mode override -m and -p; each role needs an agent file rig-<role>.
-# Usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
-#        rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>
+# Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl), and talk to the agents.
+# Run "rig help" for the commands, flags and team definition; see bin/README.md for the full guide.
 
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
 
 usage() {
-    echo "usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>" >&2
+    echo "usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message> | rig help" >&2
     exit 1
 }
+
+help_text() {
+    cat << 'EOF'
+rig: a team of claude agents in zellij panes
+
+usage:
+  rig up [-C dir] [-m model] [-p mode] [-t team] [message]
+                         start the team, or switch to it if it is running; message is gate's first task
+  rig down [-C dir]      close the rig tab (inside zellij) or kill the session
+  rig send [-C dir] <pane> <message>
+                         type a message into one pane (role name or pane id) and press Enter
+  rig send --list        list the agent panes as "<name> <pane id> <agent>"
+  rig model [-C dir] [all|role] <model>
+                         type /model into every agent, or one, and confirm the dialog
+  rig broadcast [-C dir] <message>
+                         send a message to every agent
+  rig help               show this text
+
+flags:
+  -C dir    project directory (default: the current one); the session is named rig-<dir name>
+  -m model  model alias or id for all agents (a role's own model wins)
+  -p mode   permission mode for all agents (a role's own mode wins):
+            acceptEdits, auto, dontAsk, manual, plan (bypassPermissions is not allowed)
+  -t team   the team, as role[:model[:mode]],...
+
+team:
+  gate plus 1-5 workers, gate first. Each role needs an agent file rig-<role> in ~/.claude/agents
+  (gate, exec, watch, probe, crawler). Source, first match wins:
+    1. -t gate,exec:sonnet:plan,watch,probe
+    2. .rig.toml in the project dir, one [[agent]] table per role:
+         [[agent]]
+         role = "exec"
+         model = "sonnet"   # optional
+         mode = "plan"      # optional
+    3. gate,exec,watch
+  gate is on the left, the workers are stacked on the right (two columns from four workers on).
+
+notes:
+  - up on a running rig only switches to it; message, -m, -p and -t are ignored (use rig model).
+  - send, model and broadcast type into the input box, so they only land while the agents are idle.
+  - Newlines in messages are flattened to spaces.
+  - Only one rig per directory.
+EOF
+}
+
+case "$1" in
+    help | -h | --help)
+        help_text
+        exit 0
+        ;;
+esac
 
 [ $# -ge 1 ] || usage
 cmd="$1"
