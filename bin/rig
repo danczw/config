@@ -4,13 +4,14 @@
 # An optional message becomes the lead's first task, passed in its startup prompt.
 # "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
 # "rig model" types /model into every agent, or one, and confirms the cache dialog; it only lands while the agent is idle.
+# "rig broadcast" sends a message to every agent; it only lands while the agents are idle.
 # Usage: rig up [-C dir] [-m model] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
-#        rig model [-C dir] [all|role] <model>
+#        rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>
 
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
 
 usage() {
-    echo "usage: rig up [-C dir] [-m model] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model>" >&2
+    echo "usage: rig up [-C dir] [-m model] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>" >&2
     exit 1
 }
 
@@ -170,6 +171,16 @@ case "$cmd" in
         status=0
         for t in $targets; do
             send_to "$t" "/model $name" confirm && echo "$t: /model $name" || status=1
+        done
+        exit $status
+        ;;
+    broadcast)
+        [ -n "${message//[[:space:]]/}" ] || usage
+        targets="$(rig_panes | awk '{ print $1 }')"
+        [ -n "$targets" ] || { echo "rig: no agent panes found" >&2; exit 1; }
+        status=0
+        for t in $targets; do
+            send_to "$t" "$message" && echo "$t: sent" || status=1
         done
         exit $status
         ;;
