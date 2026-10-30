@@ -1,3 +1,4 @@
+// template rendered by bin/rig (fills __LEAD_PROMPT__); not meant to be loaded directly
 // multi-agent rig: one tab, lead on the left, builder and reviewer stacked on the right
 layout {
     // a layout replaces the default bars, so restate them to keep the tab bar visible
@@ -13,7 +14,7 @@ layout {
     tab name="rig" {
         pane split_direction="vertical" {
             pane name="lead" focus=true size="55%" command="claude" {
-                args "--agent" "rig-lead" "--name" "lead" "Startup: wait until both builder and reviewer have sent you a ready message. Then, if the file ~/.cache/rig/task exists, read it and treat its contents as the user's first request and start working on it. If it does not exist, just tell the user the team is ready."
+                args "--agent" "rig-lead" "--name" "lead" "__LEAD_PROMPT__"
             }
             pane split_direction="horizontal" {
                 pane name="builder" command="claude" {

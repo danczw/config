@@ -1,13 +1,11 @@
 #!/bin/bash
 # Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl).
 # Inside zellij it opens a "rig" tab in the current session; outside it starts a new session.
-# An optional message becomes the lead's first task, picked up once the workers report ready.
+# An optional message becomes the lead's first task, passed in its startup prompt.
 # "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
 # Usage: rig up [-C dir] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
 
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
-# The lead reads this path (see the startup prompt in the layout), so keep both in sync
-TASK_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/rig/task"
 
 usage() {
     echo "usage: rig up [-C dir] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list" >&2
@@ -38,14 +36,22 @@ message="$*"
 cd "$dir" || exit 1
 session="rig-$(basename "$PWD")"
 
-# Write the lead's first task, or clear a stale one so an old task is never picked up
-set_task() {
-    mkdir -p "$(dirname "$TASK_FILE")"
-    if [ -n "$message" ]; then
-        printf '%s\n' "$message" > "$TASK_FILE"
+# Print the layout template with the lead's startup prompt filled in (escaped for a KDL string)
+render_layout() {
+    # bash 5.2 would treat & in the replacement as the matched text
+    shopt -u patsub_replacement 2>/dev/null
+    local prompt="Startup: wait until both builder and reviewer have sent you a ready message."
+    if [ -n "${message//[[:space:]]/}" ]; then
+        prompt+=" Then start on this first request from the user: ${message}"
     else
-        rm -f "$TASK_FILE"
+        prompt+=" Then tell the user the team is ready."
     fi
+    prompt="${prompt//\\/\\\\}"
+    prompt="${prompt//\"/\\\"}"
+    prompt="${prompt//$'\n'/\\n}"
+    local layout
+    layout="$(< "$LAYOUT")"
+    printf '%s\n' "${layout//__LEAD_PROMPT__/$prompt}"
 }
 
 # Run a zellij action, targeting the rig session when called from outside zellij
@@ -89,18 +95,15 @@ case "$cmd" in
                 warn_running
                 exec zellij action go-to-tab-name rig > /dev/null
             fi
-            set_task
-            exec zellij action new-tab --name rig --cwd "$PWD" --layout "$LAYOUT" > /dev/null
+            exec zellij action new-tab --name rig --cwd "$PWD" --layout-string "$(render_layout)" > /dev/null
         fi
         if zellij list-sessions --short 2>/dev/null | grep -qxF "$session"; then
             warn_running
             exec zellij attach "$session"
         fi
-        set_task
-        exec zellij --session "$session" --layout "$LAYOUT"
+        exec zellij --session "$session" --layout-string "$(render_layout)"
         ;;
     down)
-        rm -f "$TASK_FILE"
         if [ -n "$ZELLIJ" ]; then
             zellij action go-to-tab-name rig > /dev/null && zellij action close-tab > /dev/null
         else

@@ -129,7 +129,7 @@ fi
 
 maybe_setup helix  "helix?"  "config.toml" "mytheme.toml" "languages.toml" "ignore"
 maybe_setup yazi   "yazi?"   "yazi.toml"
-maybe_setup zellij "zellij?" "config.kdl" "layouts/rig.kdl"
+maybe_setup zellij "zellij?" "config.kdl"
 
 #-------------------------------------------------------------------------------
 # zoxide — generates a file rather than symlinking, so handled separately
