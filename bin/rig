@@ -1,36 +1,68 @@
 #!/bin/bash
 # Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl).
 # Inside zellij it opens a "rig" tab in the current session; outside it starts a new session.
-# Usage: rig up [dir] | rig down [dir]
+# An optional message becomes the lead's first task, picked up once the workers report ready.
+# Usage: rig up [-C dir] [message] | rig down [-C dir]
 
-# Use the layout from the repo this script is symlinked from, so rig works before the zellij install step
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
+# The lead reads this path (see the startup prompt in the layout), so keep both in sync
+TASK_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/rig/task"
 
 usage() {
-    echo "usage: rig up [dir] | rig down [dir]" >&2
+    echo "usage: rig up [-C dir] [message] | rig down [-C dir]" >&2
     exit 1
 }
 
 [ $# -ge 1 ] || usage
 cmd="$1"
-dir="${2:-$PWD}"
+shift
+
+dir="$PWD"
+while getopts 'C:' option; do
+    case $option in
+        C) dir="$OPTARG" ;;
+        *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+message="$*"
+
 cd "$dir" || exit 1
 session="rig-$(basename "$PWD")"
+
+# Write the lead's first task, or clear a stale one so an old task is never picked up
+set_task() {
+    mkdir -p "$(dirname "$TASK_FILE")"
+    if [ -n "$message" ]; then
+        printf '%s\n' "$message" > "$TASK_FILE"
+    else
+        rm -f "$TASK_FILE"
+    fi
+}
+
+warn_running() {
+    [ -z "$message" ] || echo "rig: already running, message not sent" >&2
+}
 
 case "$cmd" in
     up)
         if [ -n "$ZELLIJ" ]; then
             if zellij action query-tab-names | grep -qxF rig; then
+                warn_running
                 exec zellij action go-to-tab-name rig
             fi
+            set_task
             exec zellij action new-tab --name rig --cwd "$PWD" --layout "$LAYOUT"
         fi
         if zellij list-sessions --short 2>/dev/null | grep -qxF "$session"; then
+            warn_running
             exec zellij attach "$session"
         fi
+        set_task
         exec zellij --session "$session" --layout "$LAYOUT"
         ;;
     down)
+        rm -f "$TASK_FILE"
         if [ -n "$ZELLIJ" ]; then
             zellij action go-to-tab-name rig && zellij action close-tab
         else
