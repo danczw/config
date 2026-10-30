@@ -1,4 +1,4 @@
-// template rendered by bin/rig (fills __LEAD_PROMPT__); not meant to be loaded directly
+// template rendered by bin/rig (fills __MODEL_ARGS__ and __LEAD_PROMPT__); not meant to be loaded directly
 // multi-agent rig: one tab, lead on the left, builder and reviewer stacked on the right
 layout {
     // a layout replaces the default bars, so restate them to keep the tab bar visible
@@ -14,14 +14,14 @@ layout {
     tab name="rig" {
         pane split_direction="vertical" {
             pane name="lead" focus=true size="55%" command="claude" {
-                args "--agent" "rig-lead" "--name" "lead" "__LEAD_PROMPT__"
+                args "--agent" "rig-lead" "--name" "lead" __MODEL_ARGS__ "__LEAD_PROMPT__"
             }
             pane split_direction="horizontal" {
                 pane name="builder" command="claude" {
-                    args "--agent" "rig-builder" "--name" "builder" "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying builder is ready for work. Do nothing else until the lead sends you a task."
+                    args "--agent" "rig-builder" "--name" "builder" __MODEL_ARGS__ "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying builder is ready for work. Do nothing else until the lead sends you a task."
                 }
                 pane name="reviewer" command="claude" {
-                    args "--agent" "rig-reviewer" "--name" "reviewer" "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying reviewer is ready for work. Do nothing else until the lead sends you a task."
+                    args "--agent" "rig-reviewer" "--name" "reviewer" __MODEL_ARGS__ "Startup: use ListAgents to find the session named lead, then SendMessage it one short line saying reviewer is ready for work. Do nothing else until the lead sends you a task."
                 }
             }
         }
