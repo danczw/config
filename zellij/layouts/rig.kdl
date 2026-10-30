@@ -13,7 +13,7 @@ layout {
     }
     tab name="rig" {
         pane split_direction="vertical" {
-            pane name="gate" focus=true size="55%" command="claude" {
+            pane name="gate" focus=true size="45%" command="claude" {
                 args "--agent" "rig-gate" "--name" "gate" __CLAUDE_ARGS__ "__GATE_PROMPT__"
             }
             __WORKER_PANES__
