@@ -63,6 +63,7 @@ while getopts 'a' option; do
 done
 
 # Tools included in auto setup (-a); set to false to skip a tool without removing it
+auto_claude=true
 auto_git=true
 auto_helix=true
 auto_nushell=true
@@ -76,6 +77,16 @@ if $auto; then
     echo -e "${RED}:: Auto setup enabled${NORMAL}\n"
 else
     echo ":: Manual setup"
+fi
+
+#-------------------------------------------------------------------------------
+# claude rig — agent files go to ~/.claude/agents (linked individually to keep existing agents), launcher to ~/.local/bin
+if { $auto && $auto_claude; } || { ! $auto && ask "claude rig?"; }; then
+    echo -e "${RED}>> Setting up claude rig...${NORMAL}"
+    for agent in claude/agents/*.md; do
+        link_file "$agent" "${HOME}/.claude/agents/$(basename "$agent")"
+    done
+    link_file "bin/rig" "${HOME}/.local/bin/rig"
 fi
 
 #-------------------------------------------------------------------------------
@@ -118,7 +129,7 @@ fi
 
 maybe_setup helix  "helix?"  "config.toml" "mytheme.toml" "languages.toml" "ignore"
 maybe_setup yazi   "yazi?"   "yazi.toml"
-maybe_setup zellij "zellij?" "config.kdl"
+maybe_setup zellij "zellij?" "config.kdl" "layouts/rig.kdl"
 
 #-------------------------------------------------------------------------------
 # zoxide — generates a file rather than symlinking, so handled separately

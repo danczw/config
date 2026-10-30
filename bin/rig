@@ -1,0 +1,43 @@
+#!/bin/bash
+# Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl).
+# Inside zellij it opens a "rig" tab in the current session; outside it starts a new session.
+# Usage: rig up [dir] | rig down [dir]
+
+# Use the layout from the repo this script is symlinked from, so rig works before the zellij install step
+LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
+
+usage() {
+    echo "usage: rig up [dir] | rig down [dir]" >&2
+    exit 1
+}
+
+[ $# -ge 1 ] || usage
+cmd="$1"
+dir="${2:-$PWD}"
+cd "$dir" || exit 1
+session="rig-$(basename "$PWD")"
+
+case "$cmd" in
+    up)
+        if [ -n "$ZELLIJ" ]; then
+            if zellij action query-tab-names | grep -qxF rig; then
+                exec zellij action go-to-tab-name rig
+            fi
+            exec zellij action new-tab --name rig --cwd "$PWD" --layout "$LAYOUT"
+        fi
+        if zellij list-sessions --short 2>/dev/null | grep -qxF "$session"; then
+            exec zellij attach "$session"
+        fi
+        exec zellij --session "$session" --layout "$LAYOUT"
+        ;;
+    down)
+        if [ -n "$ZELLIJ" ]; then
+            zellij action go-to-tab-name rig && zellij action close-tab
+        else
+            zellij kill-session "$session"
+        fi
+        ;;
+    *)
+        usage
+        ;;
+esac

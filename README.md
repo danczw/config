@@ -7,6 +7,7 @@ Personal dotfiles for various tools and shells.
 ## Contents
 
 - [Bash](https://www.gnu.org/software/bash/) — shell
+- [Claude Code](https://github.com/anthropics/claude-code) — rig agents and launcher (`bin/rig`)
 - [Git](https://github.com/git/git) — version control
 - [Helix](https://github.com/helix-editor/helix) — text editor
 - [Nu Shell](https://github.com/nushell/nushell) — shell

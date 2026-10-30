@@ -1,0 +1,28 @@
+// multi-agent rig: one tab, lead on the left, builder and reviewer stacked on the right
+layout {
+    // a layout replaces the default bars, so restate them to keep the tab bar visible
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="rig" {
+        pane split_direction="vertical" {
+            pane name="lead" focus=true size="55%" command="claude" {
+                args "--agent" "rig-lead"
+            }
+            pane split_direction="horizontal" {
+                pane name="builder" command="claude" {
+                    args "--agent" "rig-builder"
+                }
+                pane name="reviewer" command="claude" {
+                    args "--agent" "rig-reviewer"
+                }
+            }
+        }
+    }
+}
