@@ -5,13 +5,13 @@
 # "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
 # "rig model" types /model into every agent, or one, and confirms the cache dialog; it only lands while the agent is idle.
 # "rig broadcast" sends a message to every agent; it only lands while the agents are idle.
-# Usage: rig up [-C dir] [-m model] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
+# Usage: rig up [-C dir] [-m model] [-p mode] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
 #        rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>
 
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
 
 usage() {
-    echo "usage: rig up [-C dir] [-m model] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>" >&2
+    echo "usage: rig up [-C dir] [-m model] [-p mode] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>" >&2
     exit 1
 }
 
@@ -27,10 +27,12 @@ fi
 
 dir="$PWD"
 model=""
-while getopts 'C:m:' option; do
+mode=""
+while getopts 'C:m:p:' option; do
     case $option in
         C) dir="$OPTARG" ;;
         m) model="$OPTARG" ;;
+        p) mode="$OPTARG" ;;
         *) usage ;;
     esac
 done
@@ -50,7 +52,18 @@ check_model() {
     }
 }
 
-# Print the layout template with the model flag and gate's startup prompt filled in (escaped for a KDL string)
+# Exit unless the argument is a permission mode that rig allows (bypassPermissions is left out on purpose)
+check_mode() {
+    case "$1" in
+        acceptEdits | auto | dontAsk | manual | plan) ;;
+        *)
+            echo "rig: invalid mode \"$1\" (acceptEdits, auto, dontAsk, manual, plan)" >&2
+            exit 1
+            ;;
+    esac
+}
+
+# Print the layout template with the model and mode flags and gate's startup prompt filled in (escaped for a KDL string)
 render_layout() {
     # bash 5.2 would treat & in the replacement as the matched text
     shopt -u patsub_replacement 2>/dev/null
@@ -63,11 +76,12 @@ render_layout() {
     prompt="${prompt//\\/\\\\}"
     prompt="${prompt//\"/\\\"}"
     prompt="${prompt//$'\n'/\\n}"
-    local model_args=""
-    [ -z "$model" ] || model_args="\"--model\" \"$model\""
+    local claude_args=""
+    [ -z "$model" ] || claude_args="\"--model\" \"$model\""
+    [ -z "$mode" ] || claude_args+=" \"--permission-mode\" \"$mode\""
     local layout
     layout="$(< "$LAYOUT")"
-    layout="${layout//__MODEL_ARGS__/$model_args}"
+    layout="${layout//__CLAUDE_ARGS__/$claude_args}"
     printf '%s\n' "${layout//__GATE_PROMPT__/$prompt}"
 }
 
@@ -123,11 +137,13 @@ send_to() {
 warn_running() {
     [ -z "$message" ] || echo "rig: already running, message not sent" >&2
     [ -z "$model" ] || echo "rig: already running, model not changed (use rig model)" >&2
+    [ -z "$mode" ] || echo "rig: already running, mode not changed" >&2
 }
 
 case "$cmd" in
     up)
         [ -z "$model" ] || check_model "$model"
+        [ -z "$mode" ] || check_mode "$mode"
         if [ -n "$ZELLIJ" ]; then
             if zellij action query-tab-names | grep -qxF rig; then
                 warn_running

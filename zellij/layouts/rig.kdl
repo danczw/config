@@ -1,4 +1,4 @@
-// template rendered by bin/rig (fills __MODEL_ARGS__ and __GATE_PROMPT__); not meant to be loaded directly
+// template rendered by bin/rig (fills __CLAUDE_ARGS__ and __GATE_PROMPT__); not meant to be loaded directly
 // multi-agent rig: one tab, gate on the left, exec and watch stacked on the right
 layout {
     // a layout replaces the default bars, so restate them to keep the tab bar visible
@@ -14,14 +14,14 @@ layout {
     tab name="rig" {
         pane split_direction="vertical" {
             pane name="gate" focus=true size="55%" command="claude" {
-                args "--agent" "rig-gate" "--name" "gate" __MODEL_ARGS__ "__GATE_PROMPT__"
+                args "--agent" "rig-gate" "--name" "gate" __CLAUDE_ARGS__ "__GATE_PROMPT__"
             }
             pane split_direction="horizontal" {
                 pane name="exec" command="claude" {
-                    args "--agent" "rig-exec" "--name" "exec" __MODEL_ARGS__ "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying exec is ready and what your role is. Do nothing else until gate sends you a task."
+                    args "--agent" "rig-exec" "--name" "exec" __CLAUDE_ARGS__ "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying exec is ready and what your role is. Do nothing else until gate sends you a task."
                 }
                 pane name="watch" command="claude" {
-                    args "--agent" "rig-watch" "--name" "watch" __MODEL_ARGS__ "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying watch is ready and what your role is. Do nothing else until gate sends you a task."
+                    args "--agent" "rig-watch" "--name" "watch" __CLAUDE_ARGS__ "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying watch is ready and what your role is. Do nothing else until gate sends you a task."
                 }
             }
         }
