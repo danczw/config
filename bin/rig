@@ -2,20 +2,27 @@
 # Launch a zellij tab with one pane per named claude agent (see zellij/layouts/rig.kdl).
 # Inside zellij it opens a "rig" tab in the current session; outside it starts a new session.
 # An optional message becomes the lead's first task, picked up once the workers report ready.
-# Usage: rig up [-C dir] [message] | rig down [-C dir]
+# "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
+# Usage: rig up [-C dir] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
 
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
 # The lead reads this path (see the startup prompt in the layout), so keep both in sync
 TASK_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/rig/task"
 
 usage() {
-    echo "usage: rig up [-C dir] [message] | rig down [-C dir]" >&2
+    echo "usage: rig up [-C dir] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list" >&2
     exit 1
 }
 
 [ $# -ge 1 ] || usage
 cmd="$1"
 shift
+
+list=false
+if [ "$cmd" = send ] && [ "$1" = --list ]; then
+    list=true
+    shift
+fi
 
 dir="$PWD"
 while getopts 'C:' option; do
@@ -25,6 +32,7 @@ while getopts 'C:' option; do
     esac
 done
 shift $((OPTIND - 1))
+args=("$@")
 message="$*"
 
 cd "$dir" || exit 1
@@ -38,6 +46,36 @@ set_task() {
     else
         rm -f "$TASK_FILE"
     fi
+}
+
+# Run a zellij action, targeting the rig session when called from outside zellij
+zj() {
+    if [ -n "$ZELLIJ" ]; then
+        zellij action "$@"
+    else
+        ZELLIJ_SESSION_NAME="$session" zellij action "$@"
+    fi
+}
+
+# List the rig tab's agent panes as "<name> <pane id> <agent>"
+rig_panes() {
+    zj list-panes --json --tab --command | python3 -c '
+import json, re, sys
+for p in json.load(sys.stdin):
+    cmd = p.get("terminal_command") or ""
+    name = re.search(r"--name (\S+)", cmd)
+    agent = re.search(r"--agent (\S+)", cmd)
+    if p["tab_name"] == "rig" and not p["is_plugin"] and name:
+        print(name.group(1), "terminal_%d" % p["id"], agent.group(1) if agent else "-")
+'
+}
+
+# Print the pane id for a role name; pane ids pass through unchanged
+resolve_pane() {
+    case "$1" in
+        terminal_* | [0-9]*) echo "$1" ;;
+        *) rig_panes | awk -v t="$1" '$1 == t { print $2 }' ;;
+    esac
 }
 
 warn_running() {
@@ -68,6 +106,25 @@ case "$cmd" in
         else
             zellij kill-session "$session"
         fi
+        ;;
+    send)
+        if $list; then
+            rig_panes
+            exit
+        fi
+        [ ${#args[@]} -ge 2 ] || usage
+        target="${args[0]}"
+        text="${args[*]:1}"
+        # A newline would submit early in claude's input box
+        text="${text//$'\n'/ }"
+        pane="$(resolve_pane "$target")"
+        if [ -z "$pane" ] || [ "$(wc -l <<< "$pane")" -ne 1 ]; then
+            echo "rig: no unique pane matching \"$target\"" >&2
+            exit 1
+        fi
+        zj write-chars --pane-id "$pane" -- "$text" > /dev/null || exit 1
+        sleep 0.2
+        zj write --pane-id "$pane" 13 > /dev/null
         ;;
     *)
         usage
