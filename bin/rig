@@ -5,13 +5,15 @@
 # "rig send" types a message into a pane (a role name or a pane id) and presses Enter.
 # "rig model" types /model into every agent, or one, and confirms the cache dialog; it only lands while the agent is idle.
 # "rig broadcast" sends a message to every agent; it only lands while the agents are idle.
-# Usage: rig up [-C dir] [-m model] [-p mode] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
+# The team is "gate" plus 1-5 workers: -t role[:model[:mode]],... or .rig.toml ([[agent]] tables with role, model, mode)
+# in the project dir, else gate,exec,watch. A role's model and mode override -m and -p; each role needs an agent file rig-<role>.
+# Usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list
 #        rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>
 
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
 
 usage() {
-    echo "usage: rig up [-C dir] [-m model] [-p mode] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>" >&2
+    echo "usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message>" >&2
     exit 1
 }
 
@@ -28,11 +30,13 @@ fi
 dir="$PWD"
 model=""
 mode=""
-while getopts 'C:m:p:' option; do
+team=""
+while getopts 'C:m:p:t:' option; do
     case $option in
         C) dir="$OPTARG" ;;
         m) model="$OPTARG" ;;
         p) mode="$OPTARG" ;;
+        t) team="$OPTARG" ;;
         *) usage ;;
     esac
 done
@@ -63,11 +67,90 @@ check_mode() {
     esac
 }
 
-# Print the layout template with the model and mode flags and gate's startup prompt filled in (escaped for a KDL string)
+# Fill roles, role_model and role_mode from -t, else .rig.toml, else the default team; exit on an invalid team
+roles=()
+role_model=()
+role_mode=()
+load_team() {
+    local spec="$team" entries entry role m p extra pattern='^[A-Za-z0-9_-]+$' agents="$HOME/.claude/agents"
+    if [ -z "$spec" ] && [ -f .rig.toml ]; then
+        spec="$(python3 -c '
+import sys, tomllib
+try:
+    with open(sys.argv[1], "rb") as f:
+        agents = tomllib.load(f).get("agent", [])
+    print(",".join("%s:%s:%s" % (a["role"], a.get("model", ""), a.get("mode", "")) for a in agents))
+except (OSError, tomllib.TOMLDecodeError, KeyError, TypeError, AttributeError) as e:
+    sys.exit("rig: .rig.toml: %r" % e)
+' .rig.toml)" || exit 1
+    fi
+    [ -n "$spec" ] || [ -f .rig.toml ] || spec="gate,exec,watch"
+    IFS=, read -ra entries <<< "$spec"
+    for entry in "${entries[@]}"; do
+        IFS=: read -r role m p extra <<< "$entry"
+        [[ "$role" =~ $pattern ]] || { echo "rig: invalid role \"$role\"" >&2; exit 1; }
+        [ -z "$extra" ] || { echo "rig: invalid team entry \"$entry\" (role[:model[:mode]])" >&2; exit 1; }
+        [[ " ${roles[*]} " != *" $role "* ]] || { echo "rig: duplicate role \"$role\"" >&2; exit 1; }
+        [ -f "$agents/rig-$role.md" ] || { echo "rig: no agent file $agents/rig-$role.md (run install.sh)" >&2; exit 1; }
+        [ -z "$m" ] || check_model "$m"
+        [ -z "$p" ] || check_mode "$p"
+        roles+=("$role")
+        role_model+=("$m")
+        role_mode+=("$p")
+    done
+    [ "${roles[0]}" = gate ] || { echo "rig: the team must start with gate" >&2; exit 1; }
+    [ ${#roles[@]} -ge 2 ] && [ ${#roles[@]} -le 6 ] || { echo "rig: the team needs 1-5 workers besides gate" >&2; exit 1; }
+}
+
+# Print the claude flags (as KDL strings) for team member $1: its own model and mode, else -m and -p
+role_args() {
+    local m="${role_model[$1]:-$model}" p="${role_mode[$1]:-$mode}" out=""
+    [ -z "$m" ] || out="\"--model\" \"$m\""
+    [ -z "$p" ] || out+=" \"--permission-mode\" \"$p\""
+    printf '%s' "$out"
+}
+
+# Print the KDL for the worker panes: one stacked column, or two side by side from four workers on
+worker_panes() {
+    local n=$((${#roles[@]} - 1)) i out="" split
+    split=$n
+    [ "$n" -lt 4 ] || split=$(((n + 1) / 2))
+    emit() { out+=$'\n'"$1"; }
+    pane() {
+        emit "                pane name=\"$2\" command=\"claude\" {"
+        emit "                    args \"--agent\" \"rig-$2\" \"--name\" \"$2\" $(role_args "$1") \"Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying $2 is ready and what your role is. Do nothing else until gate sends you a task.\""
+        emit "                }"
+    }
+    [ "$n" -lt 4 ] || emit "                pane split_direction=\"vertical\" {"
+    emit "                pane split_direction=\"horizontal\" {"
+    for ((i = 1; i <= n; i++)); do
+        pane "$i" "${roles[$i]}"
+        if [ "$i" -eq "$split" ] && [ "$i" -lt "$n" ]; then
+            emit "                }"
+            emit "                pane split_direction=\"horizontal\" {"
+        fi
+    done
+    emit "                }"
+    [ "$n" -lt 4 ] || emit "                }"
+    out="${out#$'\n'}"
+    # the template places the first line, so drop its indent
+    printf '%s' "${out#"${out%%[![:space:]]*}"}"
+}
+
+# Print the layout template with the team's panes, model and mode flags and gate's startup prompt filled in (escaped for a KDL string)
 render_layout() {
     # bash 5.2 would treat & in the replacement as the matched text
     shopt -u patsub_replacement 2>/dev/null
-    local prompt="Startup: wait until both exec and watch have sent you a ready message."
+    local workers=("${roles[@]:1}") list prompt
+    case ${#workers[@]} in
+        1) list="${workers[0]} has" ;;
+        2) list="both ${workers[0]} and ${workers[1]} have" ;;
+        *)
+            list="${workers[*]:0:${#workers[@]}-1}"
+            list="${list// /, } and ${workers[-1]} have"
+            ;;
+    esac
+    prompt="Startup: wait until $list sent you a ready message."
     if [ -n "${message//[[:space:]]/}" ]; then
         prompt+=" Then start on this first request from the user: ${message}"
     else
@@ -76,12 +159,11 @@ render_layout() {
     prompt="${prompt//\\/\\\\}"
     prompt="${prompt//\"/\\\"}"
     prompt="${prompt//$'\n'/\\n}"
-    local claude_args=""
-    [ -z "$model" ] || claude_args="\"--model\" \"$model\""
-    [ -z "$mode" ] || claude_args+=" \"--permission-mode\" \"$mode\""
-    local layout
+    local layout panes
     layout="$(< "$LAYOUT")"
-    layout="${layout//__CLAUDE_ARGS__/$claude_args}"
+    panes="$(worker_panes)"
+    layout="${layout//__WORKER_PANES__/$panes}"
+    layout="${layout//__CLAUDE_ARGS__/$(role_args 0)}"
     printf '%s\n' "${layout//__GATE_PROMPT__/$prompt}"
 }
 
@@ -138,12 +220,14 @@ warn_running() {
     [ -z "$message" ] || echo "rig: already running, message not sent" >&2
     [ -z "$model" ] || echo "rig: already running, model not changed (use rig model)" >&2
     [ -z "$mode" ] || echo "rig: already running, mode not changed" >&2
+    [ -z "$team" ] || echo "rig: already running, team not changed" >&2
 }
 
 case "$cmd" in
     up)
         [ -z "$model" ] || check_model "$model"
         [ -z "$mode" ] || check_mode "$mode"
+        load_team
         if [ -n "$ZELLIJ" ]; then
             if zellij action query-tab-names | grep -qxF rig; then
                 warn_running
