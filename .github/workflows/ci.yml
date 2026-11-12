@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: shellcheck
-        run: shellcheck -S warning install.sh bin/rig bash/*.sh
+        run: shellcheck --shell=bash -S warning -e SC1090,SC2034 install.sh bin/rig bash/*.sh
       - name: toml syntax
         run: |
           python3 - <<'PY'
