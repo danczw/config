@@ -155,6 +155,31 @@ role_args() {
     printf '%s' "$out"
 }
 
+# Print the startup prompt for worker $1
+worker_prompt() {
+    printf '%s' "Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying $1 is ready and what your role is. Do nothing else until gate sends you a task."
+}
+
+# Print gate's startup prompt for the workers in roles[1..] and the first request in $message
+gate_prompt() {
+    local workers=("${roles[@]:1}") list prompt
+    case ${#workers[@]} in
+        1) list="${workers[0]} has" ;;
+        2) list="both ${workers[0]} and ${workers[1]} have" ;;
+        *)
+            list="${workers[*]:0:${#workers[@]}-1}"
+            list="${list// /, } and ${workers[-1]} have"
+            ;;
+    esac
+    prompt="Startup: wait until $list sent you a ready message."
+    if [ -n "${message//[[:space:]]/}" ]; then
+        prompt+=" Then start on this first request from the user: ${message}"
+    else
+        prompt+=" Then tell the user the team is ready."
+    fi
+    printf '%s' "$prompt"
+}
+
 # Print the KDL for the worker panes: one stacked column, or two side by side from four workers on
 worker_panes() {
     local n=$((${#roles[@]} - 1)) i out="" split
@@ -163,7 +188,7 @@ worker_panes() {
     emit() { out+=$'\n'"$1"; }
     pane() {
         emit "                pane name=\"$2\" command=\"claude\" {"
-        emit "                    args \"--agent\" \"rig-$2\" \"--name\" \"$2\" $(role_args "$1") \"Startup: use ListAgents to find the session named gate, then SendMessage it one short line saying $2 is ready and what your role is. Do nothing else until gate sends you a task.\""
+        emit "                    args \"--agent\" \"rig-$2\" \"--name\" \"$2\" $(role_args "$1") \"$(worker_prompt "$2")\""
         emit "                }"
     }
     [ "$n" -lt 4 ] || emit "                pane split_direction=\"vertical\" {"
@@ -186,21 +211,8 @@ worker_panes() {
 render_layout() {
     # bash 5.2 would treat & in the replacement as the matched text
     shopt -u patsub_replacement 2>/dev/null
-    local workers=("${roles[@]:1}") list prompt
-    case ${#workers[@]} in
-        1) list="${workers[0]} has" ;;
-        2) list="both ${workers[0]} and ${workers[1]} have" ;;
-        *)
-            list="${workers[*]:0:${#workers[@]}-1}"
-            list="${list// /, } and ${workers[-1]} have"
-            ;;
-    esac
-    prompt="Startup: wait until $list sent you a ready message."
-    if [ -n "${message//[[:space:]]/}" ]; then
-        prompt+=" Then start on this first request from the user: ${message}"
-    else
-        prompt+=" Then tell the user the team is ready."
-    fi
+    local prompt
+    prompt="$(gate_prompt)"
     prompt="${prompt//\\/\\\\}"
     prompt="${prompt//\"/\\\"}"
     prompt="${prompt//$'\n'/\\n}"
