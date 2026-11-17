@@ -350,7 +350,8 @@ case "$cmd" in
         # The panes keep their --agent and --name, so /clear plus the startup prompts rebuilds the team
         names="$(rig_panes | awk '{ print $1 }')"
         grep -qxF gate <<< "$names" || { echo "rig: no gate pane found" >&2; exit 1; }
-        roles=(gate $(grep -vxF gate <<< "$names"))
+        mapfile -t roles < <(grep -vxF gate <<< "$names")
+        roles=(gate "${roles[@]}")
         [ ${#roles[@]} -ge 2 ] || { echo "rig: no worker panes found" >&2; exit 1; }
         for t in "${roles[@]}"; do
             send_to "$t" /clear || exit 1
