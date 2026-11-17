@@ -11,7 +11,7 @@ layout {
             plugin location="zellij:status-bar"
         }
     }
-    tab name="rig" {
+    tab name="__TAB_NAME__" {
         pane split_direction="vertical" {
             pane name="gate" focus=true size="45%" command="claude" {
                 args "--agent" "rig-gate" "--name" "gate" __CLAUDE_ARGS__ "__GATE_PROMPT__"

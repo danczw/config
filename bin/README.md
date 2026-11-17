@@ -24,7 +24,7 @@ The default team is `gate`, `exec` and `watch`. Agent definitions live in `claud
 rig up "write a bash script hello.sh that prints hello"
 ```
 
-Inside zellij this opens a `rig` tab; outside it starts a session named `rig-<dir name>`. The optional message is gate's first task. Gate waits until every worker has sent a ready note (with its role), then sends all agents a roster. After that, workers can hand work to each other directly, e.g. exec asks watch to review a finished change, and tell gate in one line.
+Inside zellij this opens a tab named after the project dir; outside it starts a session named `rig-<dir name>`. The optional message is gate's first task. Gate waits until every worker has sent a ready note (with its role), then sends all agents a roster. After that, workers can hand work to each other directly, e.g. exec asks watch to review a finished change, and tell gate in one line.
 
 ## Commands
 
