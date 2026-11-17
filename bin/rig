@@ -88,8 +88,9 @@ args=("$@")
 message="$*"
 
 cd "$dir" || exit 1
-tab="$(basename "$PWD")"
-session="rig-$tab"
+# Prefixed so a tab the user named after the dir is not taken for the rig
+tab="rig-$(basename "$PWD")"
+session="$tab"
 
 # Exit unless the argument looks like a model alias or id (it ends up in a KDL string and in a typed command)
 check_model() {
