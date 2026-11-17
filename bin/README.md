@@ -36,6 +36,7 @@ Inside zellij this opens a tab named `rig-<dir name>`; outside it starts a sessi
 | `rig send --list` | list the agent panes as `<name> <pane id> <agent>` |
 | `rig model [-C dir] [all\|role] <model>` | type `/model` into every agent, or one |
 | `rig broadcast [-C dir] <message>` | send a message to every agent |
+| `rig clear [-C dir] [message]` | `/clear` every agent and redo the startup handshake, e.g. for a new ticket; message is gate's first task |
 | `rig help` | print the reference |
 
 `-C dir` selects the project directory (default: the current one).

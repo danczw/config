@@ -5,7 +5,7 @@
 LAYOUT="$(dirname "$(realpath "$0")")/../zellij/layouts/rig.kdl"
 
 usage() {
-    echo "usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message> | rig help" >&2
+    echo "usage: rig up [-C dir] [-m model] [-p mode] [-t team] [message] | rig down [-C dir] | rig send [-C dir] <pane> <message> | rig send --list | rig model [-C dir] [all|role] <model> | rig broadcast [-C dir] <message> | rig clear [-C dir] [message] | rig help" >&2
     exit 1
 }
 
@@ -24,6 +24,9 @@ usage:
                          type /model into every agent, or one, and confirm the dialog
   rig broadcast [-C dir] <message>
                          send a message to every agent
+  rig clear [-C dir] [message]
+                         /clear every agent and redo the startup handshake (e.g. for a new ticket);
+                         message is gate's first task
   rig help               show this text
 
 flags:
@@ -47,7 +50,7 @@ team:
 
 notes:
   - up on a running rig only switches to it; message, -m, -p and -t are ignored (use rig model).
-  - send, model and broadcast type into the input box, so they only land while the agents are idle.
+  - send, model, broadcast and clear type into the input box, so they only land while the agents are idle.
   - Newlines in messages are flattened to spaces.
   - Only one rig per directory.
 EOF
@@ -342,6 +345,23 @@ case "$cmd" in
             send_to "$t" "$message" && echo "$t: sent" || status=1
         done
         exit $status
+        ;;
+    clear)
+        # The panes keep their --agent and --name, so /clear plus the startup prompts rebuilds the team
+        names="$(rig_panes | awk '{ print $1 }')"
+        grep -qxF gate <<< "$names" || { echo "rig: no gate pane found" >&2; exit 1; }
+        roles=(gate $(grep -vxF gate <<< "$names"))
+        [ ${#roles[@]} -ge 2 ] || { echo "rig: no worker panes found" >&2; exit 1; }
+        for t in "${roles[@]}"; do
+            send_to "$t" /clear || exit 1
+        done
+        sleep 1
+        # gate first, so it is waiting before the ready messages arrive
+        send_to gate "$(gate_prompt)" || exit 1
+        for t in "${roles[@]:1}"; do
+            send_to "$t" "$(worker_prompt "$t")" || exit 1
+        done
+        echo "cleared: ${roles[*]}"
         ;;
     *)
         usage

@@ -49,5 +49,12 @@ commands:
   completion:
     flag:
       C: ["$directories"]
+- name: clear
+  description: /clear every agent and redo the startup handshake
+  flags:
+    -C=: project directory
+  completion:
+    flag:
+      C: ["$directories"]
 - name: help
   description: show the help text
