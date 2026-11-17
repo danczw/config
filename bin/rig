@@ -88,7 +88,8 @@ args=("$@")
 message="$*"
 
 cd "$dir" || exit 1
-session="rig-$(basename "$PWD")"
+tab="$(basename "$PWD")"
+session="rig-$tab"
 
 # Exit unless the argument looks like a model alias or id (it ends up in a KDL string and in a typed command)
 check_model() {
@@ -207,6 +208,8 @@ render_layout() {
     panes="$(worker_panes)"
     layout="${layout//__WORKER_PANES__/$panes}"
     layout="${layout//__CLAUDE_ARGS__/$(role_args 0)}"
+    local name="${tab//\\/\\\\}"
+    layout="${layout//__TAB_NAME__/${name//\"/\\\"}}"
     printf '%s\n' "${layout//__GATE_PROMPT__/$prompt}"
 }
 
@@ -227,9 +230,9 @@ for p in json.load(sys.stdin):
     cmd = p.get("terminal_command") or ""
     name = re.search(r"--name (\S+)", cmd)
     agent = re.search(r"--agent (\S+)", cmd)
-    if p["tab_name"] == "rig" and not p["is_plugin"] and name:
+    if p["tab_name"] == sys.argv[1] and not p["is_plugin"] and name:
         print(name.group(1), "terminal_%d" % p["id"], agent.group(1) if agent else "-")
-'
+' "$tab"
 }
 
 # Print the pane id for a role name; pane ids pass through unchanged
@@ -272,11 +275,11 @@ case "$cmd" in
         [ -z "$mode" ] || check_mode "$mode"
         load_team
         if [ -n "$ZELLIJ" ]; then
-            if zellij action query-tab-names | grep -qxF rig; then
+            if zellij action query-tab-names | grep -qxF "$tab"; then
                 warn_running
-                exec zellij action go-to-tab-name rig > /dev/null
+                exec zellij action go-to-tab-name "$tab" > /dev/null
             fi
-            exec zellij action new-tab --name rig --cwd "$PWD" --layout-string "$(render_layout)" > /dev/null
+            exec zellij action new-tab --name "$tab" --cwd "$PWD" --layout-string "$(render_layout)" > /dev/null
         fi
         if zellij list-sessions --short 2>/dev/null | grep -qxF "$session"; then
             warn_running
@@ -286,7 +289,7 @@ case "$cmd" in
         ;;
     down)
         if [ -n "$ZELLIJ" ]; then
-            zellij action go-to-tab-name rig > /dev/null && zellij action close-tab > /dev/null
+            zellij action go-to-tab-name "$tab" > /dev/null && zellij action close-tab > /dev/null
         else
             zellij kill-session "$session"
         fi
