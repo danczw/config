@@ -64,6 +64,7 @@ done
 
 # Tools included in auto setup (-a); set to false to skip a tool without removing it
 auto_claude=true
+auto_copilot=true
 auto_git=true
 auto_helix=true
 auto_nushell=true
@@ -89,6 +90,13 @@ if { $auto && $auto_claude; } || { ! $auto && ask "claude rig?"; }; then
     link_file "claude/CLAUDE.md" "${HOME}/.claude/CLAUDE.md"
     link_file "bin/rig" "${HOME}/.local/bin/rig"
     link_file "carapace/rig.yaml" "${HOME}/.config/carapace/specs/rig.yaml"
+fi
+
+#-------------------------------------------------------------------------------
+# copilot cli: reuses claude/CLAUDE.md as personal instructions, since Copilot doesn't read ~/.claude/CLAUDE.md
+if { $auto && $auto_copilot; } || { ! $auto && ask "copilot?"; }; then
+    echo -e "${RED}>> Setting up copilot...${NORMAL}"
+    link_file "claude/CLAUDE.md" "${HOME}/.copilot/copilot-instructions.md"
 fi
 
 #-------------------------------------------------------------------------------
